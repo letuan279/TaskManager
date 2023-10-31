@@ -2,6 +2,7 @@
 import { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 export default function Sidebar({ children }: { children: React.ReactNode }) {
   return (
@@ -54,11 +55,10 @@ export function SidebarItem({
     >
       {icon}
       <span
-        className={`
-          w-52 ml-3
-          text-lg
-          overflow-hidden transition-all
-        ${isActive(path) ? "font-bold" : "font-medium"}`}
+        className={cn(
+          isActive(path) ? "font-bold" : "font-medium",
+          "w-52 ml-3 text-lg overflow-hidden transition-all"
+        )}
       >
         {text}
       </span>

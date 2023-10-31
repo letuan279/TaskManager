@@ -32,6 +32,10 @@
     --input: 20 5.9% 90%;
     --ring: 20 14.3% 4.1%;
 
+    --priority-high: 0 100% 74%;
+    --priority-medium: 36 100% 66%;
+    --priority-low: 122 61% 63%;
+
     --radius: 0.5rem;
   }
 
