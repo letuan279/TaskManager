@@ -2,3 +2,42 @@
 
 # Get all category
 POST {{dev_url}}/categories
+Content-Type: application/json
+
+{
+    "user": "6556211827656bab946d5144"
+}
+
+###
+
+# Create new category
+POST {{dev_url}}/categories/create
+content-type: application/json
+
+{
+    "name": "HUST",
+    "color": "red",
+    "user": "6556211827656bab946d5144"
+}
+
+###
+
+# Get detail a category
+GET {{dev_url}}/categories/655870d01094d1c106c73105
+
+###
+
+# Update a category
+PUT {{dev_url}}/categories/655870d01094d1c106c73105
+content-type: application/json
+
+{
+    "name": "HUST 2",
+    "color": "red",
+    "user": "6556211827656bab946d5144"
+}
+
+###
+
+# Delete a category
+DELETE {{dev_url}}/categories/655870d01094d1c106c73105

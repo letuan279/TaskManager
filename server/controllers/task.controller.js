@@ -1,18 +1,36 @@
 'use strict'
+const mongoose = require('mongoose')
 const Task = require('../models/task.model')
 const User = require('../models/user.model')
 
 class TaskController {
     index = async (req, res, next) => {
         try {
-            // Simulate user
-            const user = (await User.find()).at(0)
+            const { user } = req.body
 
-            const tasks = await Task.find({ user: user._id }).populate(['category']).lean()
+            if (!mongoose.Types.ObjectId.isValid(user)) {
+                return res.status(400).json({
+                    code: "40000",
+                    message: "Invalid user ID",
+                    data: []
+                });
+            }
+
+            const currUser = await User.findById(user)
+            if (!currUser) {
+                return res.status(404).json({
+                    code: "40400",
+                    message: "Not found current user",
+                    data: []
+                });
+            }
+
+            const tasks = await Task.find({ user: currUser._id }).lean()
 
             return res.status(200).json({
                 code: "20000",
-                metadata: { tasks }
+                message: "Success!",
+                data: { tasks }
             })
         } catch (error) {
             next(error)
@@ -38,7 +56,8 @@ class TaskController {
 
             return res.status(201).json({
                 code: "20100",
-                metadata: { task },
+                data: { task },
+                message: "Create new task successfully!"
             });
         } catch (error) {
             next(error);
@@ -49,7 +68,7 @@ class TaskController {
         try {
             const taskId = req.params.id;
 
-            const task = await Task.findById(taskId).populate(['category']).lean();
+            const task = await Task.findById(taskId).lean();
 
             if (!task) {
                 return res.status(404).json({
@@ -60,7 +79,8 @@ class TaskController {
 
             return res.status(200).json({
                 code: "20000",
-                metadata: { task },
+                data: { task },
+                message: ""
             });
         } catch (error) {
             next(error);
@@ -85,18 +105,20 @@ class TaskController {
                     priority,
                 },
                 { new: true }
-            ).populate(['category']).lean();
+            ).lean();
 
             if (!task) {
                 return res.status(404).json({
                     code: "40400",
                     message: "Task not found",
+                    data: []
                 });
             }
 
             return res.status(200).json({
                 code: "20000",
-                metadata: { task },
+                data: { task },
+                message: "Update successfully!"
             });
         } catch (error) {
             next(error);
@@ -107,18 +129,20 @@ class TaskController {
         try {
             const taskId = req.params.id;
 
-            const task = await Task.findByIdAndRemove(taskId).populate(['category']).lean();
+            const task = await Task.findById(taskId).lean();
 
             if (!task) {
                 return res.status(404).json({
                     code: "40400",
                     message: "Task not found",
+                    data: []
                 });
             }
 
             return res.status(200).json({
                 code: "20000",
                 message: "Task deleted successfully",
+                data: []
             });
         } catch (error) {
             next(error);

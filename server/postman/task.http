@@ -2,3 +2,52 @@
 
 # Get all tasks by user id
 POST {{dev_url}}/tasks
+content-type: application/json
+
+{
+    "user": "6556211827656bab946d513e"
+}
+
+###
+
+# Create new task
+POST {{dev_url}}/tasks/create
+content-type: application/json
+
+{
+    "name": "New task",
+    "start_day": "2024-03-01T15:13:23.863Z",
+    "end_day": "2023-12-02T10:20:18.378Z",
+    "color": "red",
+    "user": "6556211827656bab946d513e",
+    "category": "6556211827656bab946d514a",
+    "status": 1,
+    "priority": 3
+}
+
+###
+
+# Get detail one task
+GET {{dev_url}}/tasks/65586d150b5d51a0d2f9b0f6
+
+###
+
+# Update a task
+PUT {{dev_url}}/tasks/65586d150b5d51a0d2f9b0f6
+content-type: application/json
+
+{
+    "name": "New task 3",
+    "start_day": "2024-03-01T15:13:23.863Z",
+    "end_day": "2023-12-02T10:20:18.378Z",
+    "color": "red",
+    "user": "6556211827656bab946d513e",
+    "category": "6556211827656bab946d514a",
+    "status": 1,
+    "priority": 3
+}
+
+###
+
+# Delete a task
+DELETE {{dev_url}}/tasks/65586d150b5d51a0d2f9b0f6
