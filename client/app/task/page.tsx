@@ -10,8 +10,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { DialogTrigger } from "@/components/ui/dialog";
 import { SelectLabel } from "@radix-ui/react-select";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { CreateTaskModal } from "@/components/modal/createTaskModal.jsx";
 
 export type TaskType = {
   id: number;
@@ -33,6 +35,10 @@ type Tasks = {
 
 function Task() {
   const [tasks, setTasks] = useState<Tasks>();
+
+  const [openCreateModal, setOpenCreateModal] = useState(false);
+
+  const handleOpenCreateModal = () => setOpenCreateModal(!openCreateModal);
 
   useEffect(() => {
     async function getTasks() {
@@ -88,7 +94,11 @@ function Task() {
               </SelectTrigger>
               <SelectContent></SelectContent>
             </Select>
-            <Button>Create</Button>
+            <CreateTaskModal>
+              <DialogTrigger asChild>
+                <Button>Create</Button>
+              </DialogTrigger>
+            </CreateTaskModal>
           </div>
         </div>
         <TabsContent value="todo" className="h-full">
