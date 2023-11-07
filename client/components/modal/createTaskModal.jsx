@@ -3,16 +3,13 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input, Typography } from "@material-tailwind/react";
 import Category from "../../app/category/page";
 import { DatePicker } from "@/components/ui/date-picker.jsx";
-import { Textarea } from "@/components/ui/textarea";
 import "froala-editor/css/froala_style.min.css";
 import "froala-editor/css/froala_editor.pkgd.min.css";
 
@@ -120,7 +117,7 @@ export function CreateTaskModal({ children }) {
               >
                 End date
               </label>
-              <DatePicker date={startDate} setDate={setStartDate} />
+              <DatePicker date={endDate} setDate={setEndDate} />
             </div>
           </div>
           <div>
