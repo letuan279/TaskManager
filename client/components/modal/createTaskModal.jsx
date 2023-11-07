@@ -47,7 +47,6 @@ export function CreateTaskModal({ children }) {
                     id="radio_1"
                     type="radio"
                     name="priority"
-                    checked
                   />
                   <label
                     className="flex flex-col h-10 w-24 border-2 border-red-500 text-red-500 cursor-pointer rounded-full justify-center items-center  peer-checked:ring-red-500 peer-checked:bg-red-500 peer-checked:ring-2 peer-checked:border-transparent peer-checked:text-white"
@@ -156,7 +155,6 @@ export function CreateTaskModal({ children }) {
                   id="color_1"
                   type="radio"
                   name="color"
-                  checked
                 />
                 <label
                   className="flex flex-col h-10 w-10 border-2 bg-red-500 border-red-500 text-red-500 cursor-pointer rounded-full justify-center items-center  peer-checked:ring-red-500 peer-checked:bg-red-500 peer-checked:ring-2 peer-checked:border-transparent peer-checked:text-white"
