@@ -16,7 +16,8 @@ import { Check } from "lucide-react";
 export function CreateCategoryModal({ children }) {
   const [title, setTitle] = React.useState("Task mau");
   const [description, setDescription] = React.useState("vip pro 123@");
-  const [color, setColor] = React.useState("green");
+  const [colorCategory, setColorCategory] = React.useState("green");
+  const colors = ["red", "green", "blue", "yellow", "purple", "pink"];
 
   const handleSendData = () => {
     console.log({
@@ -38,6 +39,7 @@ export function CreateCategoryModal({ children }) {
           <Input
             color="blue"
             label="Category name"
+            value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
           <div>
@@ -49,6 +51,7 @@ export function CreateCategoryModal({ children }) {
             </label>
             <Textarea
               placeholder="Enter the description"
+              value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
@@ -60,96 +63,27 @@ export function CreateCategoryModal({ children }) {
               Color
             </label>
             <form className="flex items-center w-1/3 gap-x-5">
-              <div className="flex-1">
-                <input
-                  class="sr-only peer"
-                  id="red"
-                  type="radio"
-                  name="color"
-                  onChange={(e) => setColor(e.target.id)}
-                />
-                <label
-                  className="flex flex-col h-10 w-10 border-2 bg-red-500 border-red-500 text-red-500 cursor-pointer rounded-full justify-center items-center  peer-checked:ring-red-500 peer-checked:bg-red-500 peer-checked:ring-2 peer-checked:border-transparent peer-checked:text-white"
-                  for="red"
-                >
-                  <Check />
-                </label>
-              </div>
-              <div className="flex-2">
-                <input
-                  class="sr-only peer"
-                  id="yellow"
-                  type="radio"
-                  name="color"
-                  onChange={(e) => setColor(e.target.id)}
-                />
-                <label
-                  className="flex flex-col h-10 w-10 border-2 bg-yellow-600 border-yellow-600 text-yellow-600 cursor-pointer rounded-full justify-center items-center  peer-checked:ring-yellow-600 peer-checked:bg-yellow-600 peer-checked:ring-2 peer-checked:border-transparent peer-checked:text-white"
-                  for="yellow"
-                >
-                  <Check />
-                </label>
-              </div>
-              <div className="flex-3">
-                <input
-                  class="sr-only peer"
-                  id="green"
-                  type="radio"
-                  name="color"
-                  onChange={(e) => setColor(e.target.id)}
-                />
-                <label
-                  className="flex flex-col h-10 w-10 border-2 bg-green-500 border-green-500 text-green-500 cursor-pointer rounded-full justify-center items-center  peer-checked:ring-green-500 peer-checked:bg-green-500 peer-checked:ring-2 peer-checked:border-transparent peer-checked:text-white"
-                  for="green"
-                >
-                  <Check />
-                </label>
-              </div>
-              <div className="flex-4">
-                <input
-                  class="sr-only peer"
-                  id="pink"
-                  type="radio"
-                  name="color"
-                  onChange={(e) => setColor(e.target.id)}
-                />
-                <label
-                  className="flex flex-col h-10 w-10 border-2 bg-pink-500 border-pink-500 text-pink-500 cursor-pointer rounded-full justify-center items-center  peer-checked:ring-pink-500 peer-checked:bg-pink-500 peer-checked:ring-2 peer-checked:border-transparent peer-checked:text-white"
-                  for="pink"
-                >
-                  <Check />
-                </label>
-              </div>
-              <div className="flex-5">
-                <input
-                  class="sr-only peer"
-                  id="purple"
-                  type="radio"
-                  name="color"
-                  onChange={(e) => setColor(e.target.id)}
-                />
-                <label
-                  className="flex flex-col h-10 w-10 border-2 bg-purple-500 border-purple-500 text-purple-500 cursor-pointer rounded-full justify-center items-center  peer-checked:ring-purple-500 peer-checked:bg-purple-500 peer-checked:ring-2 peer-checked:border-transparent peer-checked:text-white"
-                  for="purple"
-                >
-                  <Check />
-                </label>
-              </div>
-              <div className="flex-6">
-                <input
-                  class="sr-only peer"
-                  id="blue"
-                  type="radio"
-                  name="color"
-                  onChange={(e) => setColor(e.target.id)}
-                />
-                <label
-                  className="flex flex-col h-10 w-10 border-2 bg-blue-500 border-blue-500 text-blue-500 cursor-pointer rounded-full justify-center items-center  peer-checked:ring-blue-500 peer-checked:bg-blue-500 peer-checked:ring-2 peer-checked:border-transparent peer-checked:text-white"
-                  for="blue"
-                >
-                  <Check />
-                </label>
-              </div>
+            {colors.map((color, i) => {
+                const isChecked = colorCategory === color;
+                return (
+                  <div className="flex-6" key={i}>
+                    <input
+                      class="sr-only peer"
+                      id={color}
+                      type="radio"
+                      name="color"
+                      onChange={handleColorChange}
+                      defaultChecked={isChecked}
+                    />
+                    <label
+                      className={`flex flex-col h-10 w-10 border-2 bg-${color}-500 border-${color}-500 text-${color}-500 cursor-pointer rounded-full justify-center items-center  peer-checked:ring-${color}-500 peer-checked:bg-${color}-500 peer-checked:ring-2 peer-checked:border-transparent peer-checked:text-white`}
+                      for={color}
+                    >
+                      <Check />
+                    </label>
+                  </div>
+                );
+              })} 
             </form>
           </div>
         </div>
