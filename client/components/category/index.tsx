@@ -14,7 +14,7 @@ const CategoryComponent = ({ category }: { category: Category }) => {
   return (
     <Card className="w-1/4 shadow-xl">
       <CardHeader className="flex flex-row justify-between items-center">
-        <CardTitle className={`text-${category.color.toLowerCase()}-500`}>
+        <CardTitle style={{ color: category.color.toLowerCase() }}>
           {category.name}
         </CardTitle>
         <Button className="bg-background hover:bg-secondary text-foreground">
@@ -38,7 +38,9 @@ const CategoryComponent = ({ category }: { category: Category }) => {
         </div>
       </CardContent>
       <CardFooter>
-        <Button variant={"outline"}>More details</Button>
+        <Button size={"blue"} variant={"outline-blue"}>
+          More details
+        </Button>
       </CardFooter>
     </Card>
   );
