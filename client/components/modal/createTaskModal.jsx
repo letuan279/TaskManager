@@ -53,28 +53,29 @@ export function CreateTaskModal({ children }) {
   return (
     <Dialog>
       {children}
-      <DialogContent className="sm:max-w-[50%]">
+      <DialogContent className="sm:max-w-[65%]">
         <DialogHeader>
           <DialogTitle>New task</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-6">
           <Input
             color="blue"
-            label="タスクのタイトル"
+            label="Task title"
             onChange={(e) => setTitle(e.target.value)}
+            className="w-[100px]"
           />
           <div className="flex flex-row justify-between">
             <div>
               <label
                 for="countries"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 priority
               </label>
               <form className="flex items-center w-1/3 gap-x-5">
                 <div className="flex-1">
                   <input
-                    class="sr-only peer"
+                    className="sr-only peer"
                     id="radio_1"
                     type="radio"
                     name="priority"
@@ -89,7 +90,7 @@ export function CreateTaskModal({ children }) {
                 </div>
                 <div className="flex-2">
                   <input
-                    class="sr-only peer"
+                    className="sr-only peer"
                     id="radio_2"
                     type="radio"
                     name="priority"
@@ -104,7 +105,7 @@ export function CreateTaskModal({ children }) {
                 </div>
                 <div className="flex-3">
                   <input
-                    class="sr-only peer"
+                    className="sr-only peer"
                     id="radio_3"
                     type="radio"
                     name="priority"
@@ -122,13 +123,13 @@ export function CreateTaskModal({ children }) {
             <div className="">
               <label
                 for="countries"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 Category
               </label>
               <select
                 id="countries"
-                class=" border border-blue-gray-200 text-blue-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-200 p-2.5 pr-72 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className=" border border-blue-gray-200 text-blue-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-200 p-2.5 pr-72 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 value={category}
                 onChange={handleCategoryChange}
               >
@@ -143,7 +144,7 @@ export function CreateTaskModal({ children }) {
             <div>
               <label
                 for="countries"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 Start date
               </label>
@@ -152,7 +153,7 @@ export function CreateTaskModal({ children }) {
             <div className="pr-52">
               <label
                 for="countries"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 End date
               </label>
@@ -162,7 +163,7 @@ export function CreateTaskModal({ children }) {
           <div>
             <label
               for="countries"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Description
             </label>
@@ -180,7 +181,7 @@ export function CreateTaskModal({ children }) {
           <div>
             <label
               for="countries"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Color
             </label>
@@ -188,7 +189,7 @@ export function CreateTaskModal({ children }) {
               {colors.map((color, i) => (
                   <div className="flex-6" key={i}>
                     <input
-                      class="sr-only peer"
+                      className="sr-only peer"
                       id={color}
                       type="radio"
                       name="color"
