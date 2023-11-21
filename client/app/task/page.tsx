@@ -27,7 +27,7 @@ export type TaskType = {
   priority: number;
 };
 
-type Tasks = {
+export type Tasks = {
   todo: TaskType[];
   doing: TaskType[];
   done: TaskType[];

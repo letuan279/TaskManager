@@ -10,6 +10,9 @@ import {
 } from "lucide-react";
 import Sidebar, { SidebarItem } from "@/components/Sidebar";
 import Navbar from "@/components/Navbar";
+import { useEffect, useState } from "react";
+import { CategoryType } from "./category/page";
+import { sample_categories_data } from "./category/sample-data";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +26,16 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // const [categories, setCategories] = useState<CategoryType[]>()
+
+  // useEffect(() => {
+  //   let data: CategoryType[] = []
+  //   sample_categories_data.forEach(cate => {
+  //     data = [...data, cate]
+  //   })
+  //   setCategories(data)
+  // }, [])
+
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -48,9 +61,16 @@ export default function RootLayout({
               text={"Setting"}
               path="/setting"
             />
+            {/* {categories?.map((cate) => <SidebarItem
+              icon={<Settings size={20} />}
+              text={cate.name}
+              path={`/category/${cate.name}`}
+              key={cate.id}
+            />)} */}
+
             <SidebarItem
               icon={<Settings size={20} />}
-              text={"Category"}
+              text={"HUST"}
               path="/category"
             />
           </Sidebar>

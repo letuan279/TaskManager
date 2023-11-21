@@ -42,4 +42,24 @@ const TaskComponent = ({ task }: InputType) => {
   );
 };
 
+export const MiniTaskComponent = ({ task }: InputType) => {
+  return (
+    <Card key={task.id}>
+      <CardHeader className="flex flex-row justify-between">
+        <CardTitle>{task.name}</CardTitle>
+        <Button className="bg-background hover:bg-secondary text-foreground">
+          <Trash2 />
+        </Button>
+      </CardHeader>
+      <CardFooter className="flex justify-between">
+        <div className="text-priority-high flex flex-row items-center space-x-2">
+          <Clock />
+          <div>{task.end_day}</div>
+        </div>
+        <PriorityBadge num={task.priority} />
+      </CardFooter>
+    </Card>
+  );
+};
+
 export default TaskComponent;
