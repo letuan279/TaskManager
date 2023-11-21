@@ -149,7 +149,7 @@ export function CreateTaskModal({ children }) {
               </label>
               <DatePicker date={startDate} setDate={setStartDate} />
             </div>
-            <div className="pr-40">
+            <div className="pr-52">
               <label
                 for="countries"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
