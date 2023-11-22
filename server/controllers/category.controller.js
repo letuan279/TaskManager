@@ -39,11 +39,12 @@ class CategoryController {
 
     store = async (req, res, next) => {
         try {
-            const { name, color, user } = req.body;
+            const { name, color, description, user } = req.body;
 
             const category = new Category({
                 name,
                 color,
+                description,
                 user,
             });
 
@@ -86,13 +87,14 @@ class CategoryController {
     update = async (req, res, next) => {
         try {
             const categoryId = req.params.id;
-            const { name, color, user } = req.body;
+            const { name, color, description, user } = req.body;
 
             const category = await Category.findByIdAndUpdate(
                 categoryId,
                 {
                     name,
                     color,
+                    description,
                     user,
                 },
                 { new: true }

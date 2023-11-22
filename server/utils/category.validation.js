@@ -4,7 +4,7 @@ const colorList = ['slate', 'red', 'orange', 'yellow', 'lime', 'green', 'blue', 
 
 
 const validateCategoryFields = (req, res, next) => {
-    const { name, color, user } = req.body;
+    const { name, color, description, user } = req.body;
 
     if (!name || !color || !user) {
         return res.status(400).json({

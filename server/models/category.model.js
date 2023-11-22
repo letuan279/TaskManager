@@ -7,6 +7,10 @@ var categorySchema = new mongoose.Schema({
         required: true,
         index: true,
     },
+    description: {
+        type: String,
+        default: ""
+    },
     color: {
         type: String,
         required: true

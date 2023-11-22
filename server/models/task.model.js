@@ -19,6 +19,10 @@ var taskSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    description: {
+        type: String,
+        default: ""
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'

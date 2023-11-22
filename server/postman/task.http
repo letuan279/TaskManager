@@ -1,11 +1,11 @@
 @dev_url=http://localhost:8080/api/v1/
 
-# Get all tasks by user id
+# Get all tasks by user id 
 POST {{dev_url}}/tasks
 content-type: application/json
 
 {
-    "user": "6556211827656bab946d513e"
+    "user": "655a1d62787fe99d2289b2f7"
 }
 
 ###
@@ -19,8 +19,9 @@ content-type: application/json
     "start_day": "2024-03-01T15:13:23.863Z",
     "end_day": "2023-12-02T10:20:18.378Z",
     "color": "red",
-    "user": "6556211827656bab946d513e",
-    "category": "6556211827656bab946d514a",
+    "description": "This is a new task",
+    "user": "655a1d62787fe99d2289b2f7",
+    "category": "655a1d63787fe99d2289b301",
     "status": 1,
     "priority": 3
 }
@@ -28,12 +29,12 @@ content-type: application/json
 ###
 
 # Get detail one task
-GET {{dev_url}}/tasks/65586d150b5d51a0d2f9b0f6
+GET {{dev_url}}/tasks/655a1daf6b13fcfde5375ea8
 
 ###
 
 # Update a task
-PUT {{dev_url}}/tasks/65586d150b5d51a0d2f9b0f6
+PUT {{dev_url}}/tasks/655a1daf6b13fcfde5375ea8
 content-type: application/json
 
 {
@@ -41,6 +42,7 @@ content-type: application/json
     "start_day": "2024-03-01T15:13:23.863Z",
     "end_day": "2023-12-02T10:20:18.378Z",
     "color": "red",
+    "description": "This is a new task 3",
     "user": "6556211827656bab946d513e",
     "category": "6556211827656bab946d514a",
     "status": 1,
@@ -50,4 +52,4 @@ content-type: application/json
 ###
 
 # Delete a task
-DELETE {{dev_url}}/tasks/65586d150b5d51a0d2f9b0f6
+DELETE {{dev_url}}/tasks/655a1daf6b13fcfde5375ea8

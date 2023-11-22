@@ -16,7 +16,7 @@ const colorList = ['slate', 'red', 'orange', 'yellow', 'lime', 'green', 'blue', 
 
 
 const validateTaskFields = (req, res, next) => {
-    const { name, start_day, end_day, color, user, category, status, priority } = req.body;
+    const { name, start_day, end_day, color, description, user, category, status, priority } = req.body;
 
     if (!name || !start_day || !end_day || !color || !user || !category || !status || !priority) {
         return res.status(400).json({

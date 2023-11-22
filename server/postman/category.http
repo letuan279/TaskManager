@@ -5,7 +5,7 @@ POST {{dev_url}}/categories
 Content-Type: application/json
 
 {
-    "user": "6556211827656bab946d5144"
+    "user": "655a1d62787fe99d2289b2f7"
 }
 
 ###
@@ -17,7 +17,8 @@ content-type: application/json
 {
     "name": "HUST",
     "color": "red",
-    "user": "6556211827656bab946d5144"
+    "description": "my school",
+    "user": "655a1d62787fe99d2289b2f7"
 }
 
 ###
@@ -34,7 +35,8 @@ content-type: application/json
 {
     "name": "HUST 2",
     "color": "red",
-    "user": "6556211827656bab946d5144"
+    "description": "my school",
+    "user": "655a1d62787fe99d2289b2f7"
 }
 
 ###

@@ -39,13 +39,14 @@ class TaskController {
 
     store = async (req, res, next) => {
         try {
-            const { name, start_day, end_day, color, user, category, status, priority } = req.body;
+            const { name, start_day, end_day, color, description, user, category, status, priority } = req.body;
 
             const task = new Task({
                 name,
                 start_day,
                 end_day,
                 color,
+                description,
                 user,
                 category,
                 status,
@@ -74,6 +75,7 @@ class TaskController {
                 return res.status(404).json({
                     code: "40400",
                     message: "Task not found",
+                    data: []
                 });
             }
 
@@ -90,7 +92,7 @@ class TaskController {
     update = async (req, res, next) => {
         try {
             const taskId = req.params.id;
-            const { name, start_day, end_day, color, user, category, status, priority } = req.body;
+            const { name, start_day, end_day, color, description, user, category, status, priority } = req.body;
 
             const task = await Task.findByIdAndUpdate(
                 taskId,
@@ -99,6 +101,7 @@ class TaskController {
                     start_day,
                     end_day,
                     color,
+                    description,
                     user,
                     category,
                     status,
@@ -138,6 +141,8 @@ class TaskController {
                     data: []
                 });
             }
+
+            await Task.deleteOne(task)
 
             return res.status(200).json({
                 code: "20000",
