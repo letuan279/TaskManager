@@ -14,6 +14,7 @@ import { DialogTrigger } from "@/components/ui/dialog";
 import { SelectLabel } from "@radix-ui/react-select";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CreateTaskModal } from "@/components/modal/createTaskModal.jsx";
+import { DetailTaskModal } from "@/components/modal/detailTaskModal.jsx";
 
 export type TaskType = {
   id: number;
@@ -105,7 +106,13 @@ function Task() {
           <ScrollArea className="h-full">
             <div className="space-y-6">
               {tasks?.todo.map((task) => (
-                <TaskComponent task={task} key={task.id} />
+                <DetailTaskModal key={task.id} task={task}>
+                  <DialogTrigger asChild>
+                    <span className="block cursor-pointer">
+                      <TaskComponent task={task} />
+                    </span>
+                  </DialogTrigger>
+                </DetailTaskModal>
               ))}
             </div>
           </ScrollArea>
@@ -114,7 +121,13 @@ function Task() {
           <ScrollArea className="h-full">
             <div className="space-y-6">
               {tasks?.doing.map((task) => (
-                <TaskComponent task={task} key={task.id} />
+                <DetailTaskModal key={task.id} task={task}>
+                  <DialogTrigger asChild>
+                    <span className="block cursor-pointer">
+                      <TaskComponent task={task} />
+                    </span>
+                  </DialogTrigger>
+                </DetailTaskModal>
               ))}
             </div>
           </ScrollArea>
@@ -123,7 +136,13 @@ function Task() {
           <ScrollArea className="h-full">
             <div className="space-y-6">
               {tasks?.done.map((task) => (
-                <TaskComponent task={task} key={task.id} />
+                <DetailTaskModal key={task.id} task={task}>
+                  <DialogTrigger asChild>
+                    <span className="block cursor-pointer">
+                      <TaskComponent task={task} />
+                    </span>
+                  </DialogTrigger>
+                </DetailTaskModal>
               ))}
             </div>
           </ScrollArea>
