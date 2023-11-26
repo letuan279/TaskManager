@@ -80,29 +80,31 @@ function CategoryDetail() {
             <Button>Create</Button>
           </div>
         </div>
-        <ScrollArea className="h-full w-1/3 inline-block">
-          <div className="space-y-6">
-            {tasks?.todo.map((task) => (
-              <MiniTaskComponent task={task} key={task.id} />
-            ))}
-          </div>
-        </ScrollArea>
+        <div className="grid grid-cols-3 gap-x-3 items-stretch mt-10 m-auto">
+          <ScrollArea className="p-4 h-full inline-block bg-indigo-700/50 rounded-xl">
+            <div className="space-y-6 justify-items-center">
+              {tasks?.todo.map((task) => (
+                <MiniTaskComponent task={task} key={task.id} />
+              ))}
+            </div>
+          </ScrollArea>
 
-        <ScrollArea className="h-full w-1/3 inline-block ">
-          <div className="space-y-6">
-            {tasks?.doing.map((task) => (
-              <MiniTaskComponent task={task} key={task.id} />
-            ))}
-          </div>
-        </ScrollArea>
+          <ScrollArea className="p-4 h-full inline-block bg-indigo-700/50 rounded-xl">
+            <div className="space-y-6">
+              {tasks?.doing.map((task) => (
+                <MiniTaskComponent task={task} key={task.id} />
+              ))}
+            </div>
+          </ScrollArea>
 
-        <ScrollArea className="h-full w-1/3 inline-block">
-          <div className="space-y-6">
-            {tasks?.done.map((task) => (
-              <MiniTaskComponent task={task} key={task.id} />
-            ))}
-          </div>
-        </ScrollArea>
+          <ScrollArea className="p-4 h-full inline-block bg-indigo-700/50 rounded-xl">
+            <div className="space-y-6">
+              {tasks?.done.map((task) => (
+                <MiniTaskComponent task={task} key={task.id} />
+              ))}
+            </div>
+          </ScrollArea>
+        </div>
       </Tabs>
     </div>
   );

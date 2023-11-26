@@ -70,6 +70,12 @@ export default function RootLayout({
 
             <SidebarItem
               icon={<Settings size={20} />}
+              text={"Category"}
+              path="/category"
+            />
+
+            <SidebarItem
+              icon={<Settings size={20} />}
               text={"HUST"}
               path="/categoryDetail"
             />
