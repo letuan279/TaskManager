@@ -71,7 +71,7 @@ export default function RootLayout({
             <SidebarItem
               icon={<Settings size={20} />}
               text={"HUST"}
-              path="/category"
+              path="/categoryDetail"
             />
           </Sidebar>
           <div className="w-screen h-screen">
