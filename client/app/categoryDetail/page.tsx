@@ -11,7 +11,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { sample_categories_data } from "./sample-data";
 import CategoryComponent from "@/components/category";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -83,8 +82,8 @@ function CategoryDetail() {
         <div className="grid grid-cols-3 gap-x-7 place-items-stretch mt-10 m-auto">
           <div className="w-full">
             <p className="block mb-3 font-semibold text-2xl">To Do</p>
-            <ScrollArea className="p-4 h-full bg-indigo-700/50 rounded-xl">
-              <div className="space-y-6">
+            <ScrollArea className="bg-indigo-700/50 rounded-xl">
+              <div>
                 {tasks?.todo.map((task) => (
                   <MiniTaskComponent task={task} key={task.id} />
                 ))}
@@ -94,8 +93,8 @@ function CategoryDetail() {
 
           <div className="w-full">
             <p className="block mb-3 font-semibold text-2xl">Doing</p>
-            <ScrollArea className="p-4 h-full bg-indigo-700/50 rounded-xl">
-              <div className="space-y-6">
+            <ScrollArea className="bg-indigo-700/50 rounded-xl">
+              <div>
                 {tasks?.doing.map((task) => (
                   <MiniTaskComponent task={task} key={task.id} />
                 ))}
@@ -105,22 +104,14 @@ function CategoryDetail() {
 
           <div className="w-full">
             <p className="block mb-3 font-semibold text-2xl">Done</p>
-            <ScrollArea className="p-4 h-full bg-indigo-700/50 rounded-xl">
-              <div className="space-y-6">
+            <ScrollArea className="bg-indigo-700/50 rounded-xl">
+              <div>
                 {tasks?.done.map((task) => (
                   <MiniTaskComponent task={task} key={task.id} />
                 ))}
               </div>
             </ScrollArea>
           </div>
-
-          {/* <ScrollArea className="p-4 h-full bg-indigo-700/50 rounded-xl">
-          <div className="space-y-6">{tasks?.doing.map(task => <MiniTaskComponent task={task} key={task.id} />)}</div>
-        </ScrollArea>
-
-        <ScrollArea className="p-4 h-full bg-indigo-700/50 rounded-xl">
-          <div className="space-y-6">{tasks?.done.map(task => <MiniTaskComponent task={task} key={task.id} />)}</div>
-        </ScrollArea> */}
         </div>
       </Tabs>
     </div>

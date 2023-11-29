@@ -25,7 +25,7 @@ const PriorityBadge = ({ num }: { num: number }) => {
 
 const TaskComponent = ({ task }: InputType) => {
   return (
-    <Card key={task._id}>
+    <Card key={task.id} className="m-4">
       <CardHeader className="flex flex-row justify-between">
         <CardTitle>{task.name}</CardTitle>
         <Button className="bg-background hover:bg-secondary text-foreground">
