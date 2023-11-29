@@ -1,9 +1,10 @@
 "use client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { sample_tasks_data } from "./sample-data";
 import { Button } from "@/components/ui/button";
 import TaskComponent from "@/components/task";
+import { toast } from "react-toastify";
 import {
   Select,
   SelectContent,
@@ -14,8 +15,10 @@ import { SelectLabel } from "@radix-ui/react-select";
 import { DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CreateTaskModal } from "@/components/modal/createTaskModal.jsx";
-
-import { getAllTasks } from "../../api/task";
+import { DetailTaskModal } from "@/components/modal/detailTaskModal.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTasks } from "@/redux/taskSlice";
+import { AppDispatch, RootState } from "@/redux/store";
 
 export type TaskType = {
   _id: number;
@@ -28,50 +31,29 @@ export type TaskType = {
   category_id: number;
   status: number;
   priority: number;
+  createdAt: string;
+  updatedAt: string;
 };
 
-type Tasks = {
-  todo: TaskType[];
-  doing: TaskType[];
-  done: TaskType[];
-};
+export type Tasks = TaskType[];
 
 function Task() {
-  const [tasks, setTasks] = useState<Tasks>();
+  // const [tasks, setTasks] = useState<Tasks>();
+
+  const dispatch = useDispatch<AppDispatch>();
+  const { data, status, error } = useSelector(
+    (state: RootState) => state.tasks
+  );
 
   useEffect(() => {
-    async function getTasks() {
-      const data: Tasks = {
-        todo: [],
-        doing: [],
-        done: [],
-      };
-      const tasks = await getAllTasks();
-      // console.log("TASKS:::", tasks);
+    dispatch(fetchTasks());
+  }, [dispatch]);
 
-      tasks.forEach((task: TaskType) => {
-        switch (task.status) {
-          case 1:
-            data.todo = [...data.todo, task];
-            break;
-          case 2:
-            data.doing = [...data.doing, task];
-            break;
-          case 3:
-            data.done = [...data.done, task];
-            break;
-          default:
-            break;
-        }
-      });
+  if (error) {
+    toast.error(error);
+  }
 
-      setTasks(data);
-    }
-
-    getTasks();
-  }, []);
-
-  console.log(tasks);
+  console.log(data);
 
   return (
     <div className="pt-8 px-12 space-y-6 h-4/6">
@@ -106,27 +88,54 @@ function Task() {
         <TabsContent value="todo" className="h-full">
           <ScrollArea className="h-full">
             <div className="space-y-6">
-              {tasks?.todo.map((task) => (
-                <TaskComponent task={task} key={task._id} />
-              ))}
+              {data.length > 0 &&
+                data
+                  .filter((task: TaskType) => task.status === 1)
+                  .map((task: TaskType) => (
+                    <DetailTaskModal key={task._id} task={task}>
+                      <DialogTrigger asChild>
+                        <span className="block cursor-pointer">
+                          <TaskComponent task={task} />
+                        </span>
+                      </DialogTrigger>
+                    </DetailTaskModal>
+                  ))}
             </div>
           </ScrollArea>
         </TabsContent>
         <TabsContent value="doing" className="h-full">
           <ScrollArea className="h-full">
             <div className="space-y-6">
-              {tasks?.doing.map((task) => (
-                <TaskComponent task={task} key={task._id} />
-              ))}
+              {data.length > 0 &&
+                data
+                  .filter((task: TaskType) => task.status === 2)
+                  .map((task: TaskType) => (
+                    <DetailTaskModal key={task._id} task={task}>
+                      <DialogTrigger asChild>
+                        <span className="block cursor-pointer">
+                          <TaskComponent task={task} />
+                        </span>
+                      </DialogTrigger>
+                    </DetailTaskModal>
+                  ))}
             </div>
           </ScrollArea>
         </TabsContent>
         <TabsContent value="done" className="h-full">
           <ScrollArea className="h-full">
             <div className="space-y-6">
-              {tasks?.done.map((task) => (
-                <TaskComponent task={task} key={task._id} />
-              ))}
+              {data.length > 0 &&
+                data
+                  .filter((task: TaskType) => task.status === 3)
+                  .map((task: TaskType) => (
+                    <DetailTaskModal key={task._id} task={task}>
+                      <DialogTrigger asChild>
+                        <span className="block cursor-pointer">
+                          <TaskComponent task={task} />
+                        </span>
+                      </DialogTrigger>
+                    </DetailTaskModal>
+                  ))}
             </div>
           </ScrollArea>
         </TabsContent>

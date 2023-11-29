@@ -10,9 +10,12 @@ import {
 } from "lucide-react";
 import Sidebar, { SidebarItem } from "@/components/Sidebar";
 import Navbar from "@/components/Navbar";
-import { useEffect, useState } from "react";
-import { CategoryType } from "./category/page";
+// import { CategoryType } from "./category/page";
 import { sample_categories_data } from "./category/sample-data";
+import { ToastContainer } from "react-toastify";
+
+import ReduxProvider from "../redux/ReduxProvider";
+import "react-toastify/dist/ReactToastify.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,66 +29,59 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // const [categories, setCategories] = useState<CategoryType[]>()
-
-  // useEffect(() => {
-  //   let data: CategoryType[] = []
-  //   sample_categories_data.forEach(cate => {
-  //     data = [...data, cate]
-  //   })
-  //   setCategories(data)
-  // }, [])
-
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <div className="w-screen h-screen flex">
-          <Sidebar>
-            <SidebarItem
-              icon={<LayoutDashboard size={20} />}
-              text={"Home"}
-              path="/"
-            />
-            <SidebarItem
-              icon={<CalendarCheck size={20} />}
-              text={"Schedule"}
-              path="/schedule"
-            />
-            <SidebarItem
-              icon={<ListTodo size={20} />}
-              text={"Task"}
-              path="/task"
-            />
-            <SidebarItem
-              icon={<Settings size={20} />}
-              text={"Setting"}
-              path="/setting"
-            />
-            {/* {categories?.map((cate) => <SidebarItem
+    <ReduxProvider>
+      <html lang="en">
+        <body className={inter.className}>
+          <div className="w-screen h-screen flex">
+            <Sidebar>
+              <SidebarItem
+                icon={<LayoutDashboard size={20} />}
+                text={"Home"}
+                path="/"
+              />
+              <SidebarItem
+                icon={<CalendarCheck size={20} />}
+                text={"Schedule"}
+                path="/schedule"
+              />
+              <SidebarItem
+                icon={<ListTodo size={20} />}
+                text={"Task"}
+                path="/task"
+              />
+              <SidebarItem
+                icon={<Settings size={20} />}
+                text={"Setting"}
+                path="/setting"
+              />
+              {/* {categories?.map((cate) => <SidebarItem
               icon={<Settings size={20} />}
               text={cate.name}
               path={`/category/${cate.name}`}
               key={cate.id}
             />)} */}
 
-            <SidebarItem
-              icon={<Settings size={20} />}
-              text={"Category"}
-              path="/category"
-            />
+              <SidebarItem
+                icon={<Settings size={20} />}
+                text={"Category"}
+                path="/category"
+              />
 
-            <SidebarItem
-              icon={<Settings size={20} />}
-              text={"HUST"}
-              path="/categoryDetail"
-            />
-          </Sidebar>
-          <div className="w-screen h-screen">
-            <Navbar />
-            {children}
+              <SidebarItem
+                icon={<Settings size={20} />}
+                text={"HUST"}
+                path="/categoryDetail"
+              />
+            </Sidebar>
+            <div className="w-screen h-screen">
+              <Navbar />
+              {children}
+              <ToastContainer />
+            </div>
           </div>
-        </div>
-      </body>
-    </html>
+        </body>
+      </html>
+    </ReduxProvider>
   );
 }
