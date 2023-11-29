@@ -10,25 +10,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { DialogTrigger } from "@/components/ui/dialog";
 import { SelectLabel } from "@radix-ui/react-select";
+import { DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CreateTaskModal } from "@/components/modal/createTaskModal.jsx";
-import { DetailTaskModal } from "@/components/modal/detailTaskModal.jsx";
+
+import { getAllTasks } from "../../api/task";
 
 export type TaskType = {
-  id: number;
+  _id: number;
   name: string;
   start_day: string;
   end_day: string;
   color: string;
+  description: string;
   user_id: number;
   category_id: number;
   status: number;
   priority: number;
 };
 
-export type Tasks = {
+type Tasks = {
   todo: TaskType[];
   doing: TaskType[];
   done: TaskType[];
@@ -37,10 +39,6 @@ export type Tasks = {
 function Task() {
   const [tasks, setTasks] = useState<Tasks>();
 
-  const [openCreateModal, setOpenCreateModal] = useState(false);
-
-  const handleOpenCreateModal = () => setOpenCreateModal(!openCreateModal);
-
   useEffect(() => {
     async function getTasks() {
       const data: Tasks = {
@@ -48,7 +46,10 @@ function Task() {
         doing: [],
         done: [],
       };
-      sample_tasks_data.forEach((task) => {
+      const tasks = await getAllTasks();
+      // console.log("TASKS:::", tasks);
+
+      tasks.forEach((task: TaskType) => {
         switch (task.status) {
           case 1:
             data.todo = [...data.todo, task];
@@ -106,13 +107,7 @@ function Task() {
           <ScrollArea className="h-full">
             <div className="space-y-6">
               {tasks?.todo.map((task) => (
-                <DetailTaskModal key={task.id} task={task}>
-                  <DialogTrigger asChild>
-                    <span className="block cursor-pointer">
-                      <TaskComponent task={task} />
-                    </span>
-                  </DialogTrigger>
-                </DetailTaskModal>
+                <TaskComponent task={task} key={task._id} />
               ))}
             </div>
           </ScrollArea>
@@ -121,13 +116,7 @@ function Task() {
           <ScrollArea className="h-full">
             <div className="space-y-6">
               {tasks?.doing.map((task) => (
-                <DetailTaskModal key={task.id} task={task}>
-                  <DialogTrigger asChild>
-                    <span className="block cursor-pointer">
-                      <TaskComponent task={task} />
-                    </span>
-                  </DialogTrigger>
-                </DetailTaskModal>
+                <TaskComponent task={task} key={task._id} />
               ))}
             </div>
           </ScrollArea>
@@ -136,13 +125,7 @@ function Task() {
           <ScrollArea className="h-full">
             <div className="space-y-6">
               {tasks?.done.map((task) => (
-                <DetailTaskModal key={task.id} task={task}>
-                  <DialogTrigger asChild>
-                    <span className="block cursor-pointer">
-                      <TaskComponent task={task} />
-                    </span>
-                  </DialogTrigger>
-                </DetailTaskModal>
+                <TaskComponent task={task} key={task._id} />
               ))}
             </div>
           </ScrollArea>

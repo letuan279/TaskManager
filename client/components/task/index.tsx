@@ -10,6 +10,8 @@ import { Badge } from "../ui/badge";
 import { Clock, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
 
+import moment from "moment";
+
 type InputType = {
   task: TaskType;
 };
@@ -23,7 +25,7 @@ const PriorityBadge = ({ num }: { num: number }) => {
 
 const TaskComponent = ({ task }: InputType) => {
   return (
-    <Card key={task.id}>
+    <Card key={task._id}>
       <CardHeader className="flex flex-row justify-between">
         <CardTitle>{task.name}</CardTitle>
         <Button className="bg-background hover:bg-secondary text-foreground">
@@ -34,27 +36,7 @@ const TaskComponent = ({ task }: InputType) => {
       <CardFooter className="flex justify-between">
         <div className="text-priority-high flex flex-row items-center space-x-2">
           <Clock />
-          <div>{task.end_day}</div>
-        </div>
-        <PriorityBadge num={task.priority} />
-      </CardFooter>
-    </Card>
-  );
-};
-
-export const MiniTaskComponent = ({ task }: InputType) => {
-  return (
-    <Card key={task.id}>
-      <CardHeader className="flex flex-row justify-between">
-        <CardTitle>{task.name}</CardTitle>
-        <Button className="bg-background hover:bg-secondary text-foreground">
-          <Trash2 />
-        </Button>
-      </CardHeader>
-      <CardFooter className="flex justify-between">
-        <div className="text-priority-high flex flex-row items-center space-x-2">
-          <Clock />
-          <div>{task.end_day}</div>
+          <div>{moment(task.end_day).format("DD/MM/YYYY HH:MM:SS")}</div>
         </div>
         <PriorityBadge num={task.priority} />
       </CardFooter>
