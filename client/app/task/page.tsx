@@ -21,21 +21,25 @@ import { fetchTasks } from "@/redux/taskSlice";
 import { AppDispatch, RootState } from "@/redux/store";
 
 export type TaskType = {
-  _id: number;
+  _id: string;
   name: string;
   start_day: string;
   end_day: string;
   color: string;
   description: string;
-  user_id: number;
-  category_id: number;
+  user: string;
+  category: string;
   status: number;
   priority: number;
   createdAt: string;
   updatedAt: string;
 };
 
-export type Tasks = TaskType[];
+export type Tasks = {
+  todo: TaskType[];
+  doing: TaskType[];
+  done: TaskType[];
+};
 
 function Task() {
   // const [tasks, setTasks] = useState<Tasks>();
@@ -47,13 +51,12 @@ function Task() {
 
   useEffect(() => {
     dispatch(fetchTasks());
+    dispatch(fetchCategories());
   }, [dispatch]);
 
   if (error) {
     toast.error(error);
   }
-
-  console.log(data);
 
   return (
     <div className="pt-8 px-12 space-y-6 h-4/6">
@@ -92,13 +95,7 @@ function Task() {
                 data
                   .filter((task: TaskType) => task.status === 1)
                   .map((task: TaskType) => (
-                    <DetailTaskModal key={task._id} task={task}>
-                      <DialogTrigger asChild>
-                        <span className="block cursor-pointer">
-                          <TaskComponent task={task} />
-                        </span>
-                      </DialogTrigger>
-                    </DetailTaskModal>
+                    <TaskComponent key={task._id} task={task} />
                   ))}
             </div>
           </ScrollArea>
@@ -110,13 +107,7 @@ function Task() {
                 data
                   .filter((task: TaskType) => task.status === 2)
                   .map((task: TaskType) => (
-                    <DetailTaskModal key={task._id} task={task}>
-                      <DialogTrigger asChild>
-                        <span className="block cursor-pointer">
-                          <TaskComponent task={task} />
-                        </span>
-                      </DialogTrigger>
-                    </DetailTaskModal>
+                    <TaskComponent key={task._id} task={task} />
                   ))}
             </div>
           </ScrollArea>
@@ -128,13 +119,7 @@ function Task() {
                 data
                   .filter((task: TaskType) => task.status === 3)
                   .map((task: TaskType) => (
-                    <DetailTaskModal key={task._id} task={task}>
-                      <DialogTrigger asChild>
-                        <span className="block cursor-pointer">
-                          <TaskComponent task={task} />
-                        </span>
-                      </DialogTrigger>
-                    </DetailTaskModal>
+                    <TaskComponent key={task._id} task={task} />
                   ))}
             </div>
           </ScrollArea>

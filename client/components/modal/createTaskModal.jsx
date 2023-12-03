@@ -9,27 +9,46 @@ import {
 } from "@/components/ui/dialog";
 import { Input, Typography } from "@material-tailwind/react";
 import Category from "../../app/category/page";
-import { DatePicker } from "@/components/ui/date-picker.jsx";
 import "froala-editor/css/froala_style.min.css";
 import "froala-editor/css/froala_editor.pkgd.min.css";
 
 import FroalaEditorComponent from "react-froala-wysiwyg";
 import { Check } from "lucide-react";
 import { DialogClose } from "@radix-ui/react-dialog";
+import { DateTimePicker } from "../ui/date-time-picker";
+import { useDispatch, useSelector } from "react-redux";
+import { addTask } from "@/redux/taskSlice";
+import { toast } from "react-toastify";
 
 export function CreateTaskModal({ children }) {
-  const [startDate, setStartDate] = React.useState(new Date());
-  const [endDate, setEndDate] = React.useState(new Date());
-  const [title, setTitle] = React.useState("");
+  const [start_day, setStart_day] = React.useState(new Date());
+  const [end_day, setEnd_day] = React.useState(new Date());
+  const [name, setName] = React.useState("");
   const [category, setCategory] = React.useState("");
   const [priority, setPriority] = React.useState();
   const [description, setDescription] = React.useState("");
   const [color, setColor] = React.useState("");
   const colors = ["red", "green", "blue", "yellow", "purple", "pink"];
 
+  const dispatch = useDispatch();
+  const categories = useSelector(
+    (state) => state.categories
+  );
+
   const handlePriorityChange = (value) => {
     setPriority(value);
   };
+
+  const handleClearData = () => {
+    setStart_day(new Date())
+    setEnd_day(new Date())
+    setName("")
+    setCategory("")
+    setPriority("")
+    setDescription("")
+    setColor("")
+  }
+
   const handleColorChange = (e) => {
     setColor(e.target.id);
   };
@@ -38,20 +57,26 @@ export function CreateTaskModal({ children }) {
   };
 
   const handleSendData = () => {
-    console.log({
-      title,
+    dispatch(addTask({
+      name,
       category,
       priority,
-      startDate,
-      endDate,
+      start_day: start_day.date.toISOString(),
+      end_day: end_day.date.toISOString(),
       description,
       color,
+    })).unwrap()
+    .then(() => {
+      toast.success("Create task successfully!");
+    })
+    .catch((error) => {
+      toast.error(error.message || "Something was wrong!");
     });
   };
 
 
   return (
-    <Dialog>
+    <Dialog onOpenChange={handleClearData}>
       {children}
       <DialogContent className="sm:max-w-[65%]">
         <DialogHeader>
@@ -61,11 +86,11 @@ export function CreateTaskModal({ children }) {
           <Input
             color="blue"
             label="Task title"
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
             className="w-[100px]"
           />
-          <div className="flex flex-row justify-between">
-            <div>
+          <div className="flex flex-row">
+            <div className="w-1/2">
               <label
                 for="countries"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -120,7 +145,7 @@ export function CreateTaskModal({ children }) {
                 </div>
               </form>
             </div>
-            <div className="">
+            <div className="w-1/2">
               <label
                 for="countries"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -132,32 +157,32 @@ export function CreateTaskModal({ children }) {
                 className=" border border-blue-gray-200 text-blue-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-200 p-2.5 pr-72 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 value={category}
                 onChange={handleCategoryChange}
+                placeholder="Enter category"
               >
-                <option selected>Choose category</option>
-                <option value="Hust">Hust</option>
-                <option value="Intern">Intern</option>
-                <option value="Home">Home</option>
+                {categories.data.map(item => (
+                  <option selected={false} value={item._id}>{item.name}</option>
+                ))}
               </select>
             </div>
           </div>
-          <div className="flex flex-row justify-between">
-            <div>
+          <div className="flex flex-row">
+            <div className="w-1/2">
               <label
                 for="countries"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 Start date
               </label>
-              <DatePicker date={startDate} setDate={setStartDate} />
+              <DateTimePicker value={start_day} onChange={(e) => setStart_day(e)}/>
             </div>
-            <div className="pr-52">
+            <div className="w-1/2">
               <label
                 for="countries"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 End date
               </label>
-              <DatePicker date={endDate} setDate={setEndDate} />
+              <DateTimePicker value={end_day} onChange={(e) => setEnd_day(e)}/>
             </div>
           </div>
           <div>

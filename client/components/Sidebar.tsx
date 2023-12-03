@@ -1,8 +1,14 @@
 "use client";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
+import { fetchCategories } from "@/redux/categoriesSlice";
+
+import { CategoryType } from "../app/category/[slug]/page";
+import { Search } from "lucide-react";
 
 export default function Sidebar({ children }: { children: React.ReactNode }) {
   return (
@@ -63,5 +69,70 @@ export function SidebarItem({
         {text}
       </span>
     </Link>
+  );
+}
+
+function SearchBar() {
+  return (
+    <div className="input-wrapper h-10 my-2 border-none rounded px-4 bg-gray-100 flex items-center">
+      <Search size={20} />
+      <input
+        placeholder="Type to search..."
+        className="bg-transparent border-none h-full text-lg w-full ml-2 focus:outline-none"
+      />
+    </div>
+  );
+}
+
+export function SidebarCategoryItem() {
+  const pathname = usePathname();
+
+  const isActive = (path: String) => {
+    return pathname === path;
+  };
+
+  const dispatch = useDispatch<AppDispatch>();
+  const categories = useSelector((state: RootState) => state.categories);
+
+  console.log(categories);
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
+
+  return (
+    <>
+      <SearchBar />
+      {categories.data?.map((item: CategoryType) => (
+        <Link
+          key={item._id + "2"}
+          href={`/category/${item._id}`}
+          className={`
+                    h-10
+                    relative flex items-center py-1 px-2 my-1 ml-2
+                    font-medium rounded-md cursor-pointer
+                    transition-colors group
+                    ${
+                      isActive(`/category/${item._id}`)
+                        ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
+                        : "hover:bg-indigo-50 text-gray-600"
+                    }
+                `}
+        >
+          <div
+            className={`w-3 h-3 rounded-full`}
+            style={{ backgroundColor: item.color }}
+          ></div>
+          <span
+            className={cn(
+              isActive(`/category/${item._id}`) ? "font-bold" : "font-medium",
+              "w-48 ml-3 text-sm overflow-hidden transition-all"
+            )}
+          >
+            {item.name}
+          </span>
+        </Link>
+      ))}
+    </>
   );
 }

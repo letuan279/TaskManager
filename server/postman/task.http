@@ -15,13 +15,13 @@ POST {{dev_url}}/tasks/create
 content-type: application/json
 
 {
-    "name": "New task",
-    "start_day": "2024-03-01T15:13:23.863Z",
+    "name": "New task 3",
+    "start_day": "2023-12-01T15:13:23.863Z",
     "end_day": "2023-12-02T10:20:18.378Z",
     "color": "red",
-    "description": "This is a new task",
+    "description": "This is a new task 3",
     "user": "655a1d62787fe99d2289b2f7",
-    "category": "655a1d63787fe99d2289b301",
+    "category": "655a1d63787fe99d2289b303",
     "status": 1,
     "priority": 3
 }
@@ -29,22 +29,22 @@ content-type: application/json
 ###
 
 # Get detail one task
-GET {{dev_url}}/tasks/655a1daf6b13fcfde5375ea8
+GET {{dev_url}}/tasks/655b597e0bd8a5771617cc8f
 
 ###
 
 # Update a task
-PUT {{dev_url}}/tasks/655a1daf6b13fcfde5375ea8
+PUT {{dev_url}}/tasks/655b597e0bd8a5771617cc8f
 content-type: application/json
 
 {
-    "name": "New task 3",
+    "name": "New task 4",
     "start_day": "2024-03-01T15:13:23.863Z",
     "end_day": "2023-12-02T10:20:18.378Z",
     "color": "red",
-    "description": "This is a new task 3",
-    "user": "6556211827656bab946d513e",
-    "category": "6556211827656bab946d514a",
+    "description": "This is a new task 4",
+    "user": "655a1d62787fe99d2289b2f7",
+    "category": "655a1d63787fe99d2289b303",
     "status": 1,
     "priority": 3
 }
@@ -52,4 +52,4 @@ content-type: application/json
 ###
 
 # Delete a task
-DELETE {{dev_url}}/tasks/655a1daf6b13fcfde5375ea8
+DELETE {{dev_url}}/tasks/655b193ac486fae187942315

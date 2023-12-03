@@ -15,7 +15,7 @@ POST {{dev_url}}/categories/create
 content-type: application/json
 
 {
-    "name": "HUST",
+    "name": "HUST 2",
     "color": "red",
     "description": "my school",
     "user": "655a1d62787fe99d2289b2f7"

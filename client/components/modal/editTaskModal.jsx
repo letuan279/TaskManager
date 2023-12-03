@@ -12,23 +12,40 @@ import Category from "./../../app/category/page";
 import { DatePicker } from "@/components/ui/date-picker.jsx";
 import "froala-editor/css/froala_style.min.css";
 import "froala-editor/css/froala_editor.pkgd.min.css";
+import {
+    DialogTrigger,
+  } from "@/components/ui/dialog";
 
 import FroalaEditorComponent from "react-froala-wysiwyg";
 import { Check } from "lucide-react";
 import { DialogClose } from "@radix-ui/react-dialog";
+import { DateTimePicker } from "../ui/date-time-picker";
+import { useDispatch, useSelector } from "react-redux";
+import { editTask } from "@/redux/taskSlice";
+import { toast } from "react-toastify";
 
 export function EditTaskModal({ children, task }) {
-    const [startDate, setStartDate] = React.useState(new Date());
-    const [endDate, setEndDate] = React.useState(new Date());
-    const [title, setTitle] = React.useState("");
-    const [category, setCategory] = React.useState("");
-    const [priority, setPriority] = React.useState();
-    const [description, setDescription] = React.useState("");
-    const [color, setColor] = React.useState("");
+    const [start_day, setStart_day] = React.useState({date: new Date(task.start_day), hasTime: true});
+    const [end_day, setEnd_day] = React.useState({date: new Date(task.end_day), hasTime: true});
+    const [name, setName] = React.useState(task.name);
+    const [category, setCategory] = React.useState(task.category);
+    const [priority, setPriority] = React.useState(task.priority);
+    const [description, setDescription] = React.useState(task.description);
+    const [color, setColor] = React.useState(task.color);
+    const [status, setStatus] = React.useState(task.status)
     const colors = ["red", "green", "blue", "yellow", "purple", "pink"];
+
+    const categories = useSelector(
+        (state) => state.categories
+      );
+
+    const dispatch = useDispatch();
 
     const handlePriorityChange = (value) => {
         setPriority(value);
+    };
+    const handleStatusChange = (value) => {
+        setStatus(value);
     };
     const handleColorChange = (e) => {
         setColor(e.target.id);
@@ -37,35 +54,55 @@ export function EditTaskModal({ children, task }) {
         setCategory(e.target.value);
     };
 
+    const handleClearData = () => {
+        setStart_day({date: new Date(task.start_day), hasTime: true})
+        setEnd_day({date: new Date(task.end_day), hasTime: true})
+        setName(task.name)
+        setCategory(task.category)
+        setPriority(task.priority)
+        setDescription(task.description)
+        setColor(task.color)
+      }
+
     const handleSendData = () => {
-        console.log({
-            title,
+        const payload = {
+            name,
             category,
             priority,
-            startDate,
-            endDate,
+            start_day: start_day.date.toISOString(),
+            end_day: end_day.date.toISOString(),
             description,
             color,
-        });
+            status,
+        }
+
+        dispatch(editTask({id: task._id, payload})).unwrap()
+          .then(() => {
+            toast.success("Edit task successfully!");
+          })
+          .catch((error) => {
+            toast.error(error.message || "Something was wrong!");
+          });
     };
 
-
     return (
-        <Dialog>
+        <Dialog onOpenChange={handleClearData}>
             {children}
             <DialogContent className="sm:max-w-[65%]">
                 <DialogHeader>
-                    <DialogTitle>Edit Task</DialogTitle>
+                    <DialogTitle>Update task</DialogTitle>
                 </DialogHeader>
+                <div className="flex justify-end space-x-4">
+                </div>
                 <div className="flex flex-col gap-6">
                     <Input
                         color="blue"
                         label="Task title"
-                        value={task.name}
-                        className="w-[100px]"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                     />
 
-                    <div className="flex flex-row justify-between">
+                    <div className="flex flex-row gap-5">
                         <div>
                             <label
                                 for="countries"
@@ -80,7 +117,8 @@ export function EditTaskModal({ children, task }) {
                                         id="radio_1"
                                         type="radio"
                                         name="priority"
-                                        disabled="True"
+                                        checked={priority === 1}
+                                        onChange={() => handlePriorityChange(1)}
                                     />
                                     <label
                                         className="flex flex-col h-10 w-24 border-2 border-red-500 text-red-500 cursor-pointer rounded-full justify-center items-center  peer-checked:ring-red-500 peer-checked:bg-red-500 peer-checked:ring-2 peer-checked:border-transparent peer-checked:text-white"
@@ -95,6 +133,7 @@ export function EditTaskModal({ children, task }) {
                                         id="radio_2"
                                         type="radio"
                                         name="priority"
+                                        checked={priority === 2}
                                         onChange={() => handlePriorityChange(2)}
                                     />
                                     <label
@@ -110,6 +149,7 @@ export function EditTaskModal({ children, task }) {
                                         id="radio_3"
                                         type="radio"
                                         name="priority"
+                                        checked={priority === 3}
                                         onChange={() => handlePriorityChange(3)}
                                     />
                                     <label
@@ -130,18 +170,18 @@ export function EditTaskModal({ children, task }) {
                             </label>
                             <select
                                 id="countries"
-                                className="border border-blue-gray-200 text-blue-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-200 p-2.5 pr-72 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 value={category}
+                                className="border border-blue-gray-200 text-blue-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-200 p-2.5 pr-72 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 onChange={handleCategoryChange}
+                                placeholder="Choose category"
                             >
-                                <option selected>Choose category</option>
-                                <option value="Hust">Hust</option>
-                                <option value="Intern">Intern</option>
-                                <option value="Home">Home</option>
+                                {categories.data.map(item => (
+                                    <option value={item._id}>{item.name}</option>
+                                    ))}
                             </select>
                         </div>
                     </div>
-                    <div className="flex flex-row justify-between">
+                    <div className="flex flex-row gap-5">
                         <div>
                             <label
                                 for="countries"
@@ -149,16 +189,73 @@ export function EditTaskModal({ children, task }) {
                             >
                                 Start date
                             </label>
-                            <DatePicker date={startDate} setDate={setStartDate} value={task.startDate} />
+                            <DateTimePicker value={start_day} onChange={(e) => setStart_day(e)}  />
                         </div>
-                        <div className="pr-52">
+                        <div>
                             <label
                                 for="countries"
                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
                                 End date
                             </label>
-                            <DatePicker date={endDate} setDate={setEndDate} value={task.startDate} />
+                            <DateTimePicker value={end_day} onChange={(e) => setEnd_day(e)} />
+                        </div>
+                        <div>
+                            <label
+                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                                Status
+                            </label>
+                            <form className="flex items-center w-1/3 gap-x-5">
+                                <div className="flex-1">
+                                    <input
+                                        className="sr-only peer"
+                                        id="status_radio_1"
+                                        type="radio"
+                                        name="status"
+                                        checked={status === 1}
+                                        onChange={() => handleStatusChange(1)}
+                                    />
+                                    <label
+                                        className="flex flex-col h-10 w-24 border-2 border-red-500 text-red-500 cursor-pointer rounded-full justify-center items-center  peer-checked:ring-red-500 peer-checked:bg-red-500 peer-checked:ring-2 peer-checked:border-transparent peer-checked:text-white"
+                                        for="status_radio_1"
+                                    >
+                                        <span className="text-xs font-bold uppercase">TODO</span>
+                                    </label>
+                                </div>
+                                <div className="flex-2">
+                                    <input
+                                        className="sr-only peer"
+                                        id="status_radio_2"
+                                        type="radio"
+                                        name="status"
+                                        checked={status === 2}
+                                        onChange={() => handleStatusChange(2)}
+                                    />
+                                    <label
+                                        className="flex flex-col h-10 w-24 border-2 border-blue-600 text-blue-600 cursor-pointer rounded-full justify-center items-center  peer-checked:ring-blue-600 peer-checked:bg-blue-600 peer-checked:ring-2 peer-checked:border-transparent peer-checked:text-white"
+                                        for="status_radio_2"
+                                    >
+                                        <span className="text-xs font-bold uppercase">PROCESS</span>
+                                    </label>
+                                </div>
+                                <div className="flex-3">
+                                    <input
+                                        className="sr-only peer"
+                                        id="status_radio_3"
+                                        type="radio"
+                                        name="status"
+                                        checked={status === 3}
+                                        onChange={() => handleStatusChange(3)}
+                                    />
+                                    <label
+                                        className="flex flex-col h-10 w-24 border-2 border-green-500 text-green-500 cursor-pointer rounded-full justify-center items-center  peer-checked:ring-green-500 peer-checked:bg-green-500 peer-checked:ring-2 peer-checked:border-transparent peer-checked:text-white"
+                                        for="status_radio_3"
+                                    >
+                                        <span className="text-xs font-bold uppercase">DONE</span>
+                                    </label>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     <div>
@@ -175,7 +272,8 @@ export function EditTaskModal({ children, task }) {
                             }}
                             onModelChange={(newModel) => {
                                 setDescription(newModel);
-                            }}
+                              }}
+                            model={description}
                         />
                     </div>
                     <div>
@@ -186,18 +284,19 @@ export function EditTaskModal({ children, task }) {
                             Color
                         </label>
                         <form className="flex items-center w-1/3 gap-x-5">
-                            {colors.map((color, i) => (
+                            {colors.map((item, i) => (
                                 <div className="flex-6" key={i}>
                                     <input
                                         className="sr-only peer"
-                                        id={color}
+                                        id={item}
                                         type="radio"
                                         name="color"
                                         onChange={handleColorChange}
+                                        checked={item === color}
                                     />
                                     <label
-                                        className={`flex flex-col h-10 w-10 border-2 bg-${color}-500 border-${color}-500 text-${color}-500 cursor-pointer rounded-full justify-center items-center  peer-checked:ring-${color}-500 peer-checked:bg-${color}-500 peer-checked:ring-2 peer-checked:border-transparent peer-checked:text-white`}
-                                        for={color}
+                                        className={`flex flex-col h-10 w-10 border-2 bg-${item}-500 border-${item}-500 text-${item}-500 cursor-pointer rounded-full justify-center items-center  peer-checked:ring-${item}-500 peer-checked:bg-${item}-500 peer-checked:ring-2 peer-checked:border-transparent peer-checked:text-white`}
+                                        for={item}
                                     >
                                         <Check />
                                     </label>
@@ -219,7 +318,7 @@ export function EditTaskModal({ children, task }) {
                             className="bg-purple-500 text-white rounded-full border-purple-500"
                             onClick={handleSendData}
                         >
-                            Edit
+                            Update
                         </Button>
                     </DialogClose>
                 </DialogFooter>

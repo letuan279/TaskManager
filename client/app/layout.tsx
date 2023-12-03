@@ -7,8 +7,12 @@ import {
   CalendarCheck,
   ListTodo,
   Settings,
+  BookmarkCheck,
 } from "lucide-react";
-import Sidebar, { SidebarItem } from "@/components/Sidebar";
+import Sidebar, {
+  SidebarCategoryItem,
+  SidebarItem,
+} from "@/components/Sidebar";
 import Navbar from "@/components/Navbar";
 // import { CategoryType } from "./category/page";
 import { sample_categories_data } from "./category/sample-data";
@@ -50,30 +54,21 @@ export default function RootLayout({
                 text={"Task"}
                 path="/task"
               />
+
               <SidebarItem
                 icon={<Settings size={20} />}
                 text={"Setting"}
                 path="/setting"
               />
-              {/* {categories?.map((cate) => <SidebarItem
-              icon={<Settings size={20} />}
-              text={cate.name}
-              path={`/category/${cate.name}`}
-              key={cate.id}
-            />)} */}
-
+              <hr />
               <SidebarItem
-                icon={<Settings size={20} />}
+                icon={<BookmarkCheck size={20} />}
                 text={"Category"}
                 path="/category"
               />
-
-              <SidebarItem
-                icon={<Settings size={20} />}
-                text={"HUST"}
-                path="/categoryDetail"
-              />
+              <SidebarCategoryItem />
             </Sidebar>
+
             <div className="w-screen h-screen">
               <Navbar />
               {children}

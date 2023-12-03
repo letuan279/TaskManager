@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 const Category = require('../models/category.model');
 const User = require('../models/user.model');
+const Task = require('../models/task.model');
 
 class CategoryController {
     index = async (req, res, next) => {
@@ -132,7 +133,8 @@ class CategoryController {
                 });
             }
 
-            await Category.deleteOne(category);
+            await Category.deleteOne({ _id: category._id });
+            await Task.deleteMany({ category: category._id });
 
             return res.status(200).json({
                 code: "20000",

@@ -9,38 +9,64 @@ import {
 } from "@/components/ui/dialog";
 import { Input, Typography } from "@material-tailwind/react";
 import { Textarea } from "@/components/ui/textarea";
+import { DialogClose } from "@radix-ui/react-dialog";
 import "froala-editor/css/froala_style.min.css";
 import "froala-editor/css/froala_editor.pkgd.min.css";
 import { Check } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { editCategory } from "@/redux/categoriesSlice";
+import { toast } from "react-toastify";
 
-export function CreateCategoryModal({ children }) {
-  const [title, setTitle] = React.useState("Task mau");
-  const [description, setDescription] = React.useState("vip pro 123@");
-  const [colorCategory, setColorCategory] = React.useState("green");
+export function EditCategoryModal({ children, category }) {
+  const [name, setName] = React.useState(category.name);
+  const [description, setDescription] = React.useState(category.description);
+  const [colorCategory, setColorCategory] = React.useState(category.color);
   const colors = ["red", "green", "blue", "yellow", "purple", "pink"];
 
-  const handleSendData = () => {
-    console.log({
-      title,
-      description,
-      color,
-    });
+  const handleColorChange = (e) => {
+    setColorCategory(e.target.id);
   };
+
+  const dispatch = useDispatch()
+
+  const handleSendData = () => {
+
+    const payload = {
+      name,
+      description,
+      color: colorCategory,
+    }
+
+    dispatch(editCategory({id: category._id, payload})).then(() => {
+      toast.success("Edit category successfully!");
+    })
+    .catch((error) => {
+      toast.error(error.message || "Something was wrong!");
+    });
+
+  };
+
+  const handleClearData = () => {
+    setName(category.name)
+    setDescription(category.description)
+    setColorCategory(category.color)
+  }
+
   return (
-    <Dialog>
+    <Dialog onOpenChange={handleClearData}>
       {children}
       <DialogContent className="sm:max-w-[50%]">
         <DialogHeader>
           <DialogTitle>
-            <h1>Edit category</h1>
+            <h1>Update Category</h1>
           </DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-6">
           <Input
             color="blue"
             label="Category name"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
           <div>
             <label
@@ -63,7 +89,7 @@ export function CreateCategoryModal({ children }) {
               Color
             </label>
             <form className="flex items-center w-1/3 gap-x-5">
-            {colors.map((color, i) => {
+              {colors.map((color, i) => {
                 const isChecked = colorCategory === color;
                 return (
                   <div className="flex-6" key={i}>
@@ -83,7 +109,7 @@ export function CreateCategoryModal({ children }) {
                     </label>
                   </div>
                 );
-              })} 
+              })}
             </form>
           </div>
         </div>
@@ -100,7 +126,7 @@ export function CreateCategoryModal({ children }) {
               className="bg-purple-500 text-white rounded-full border-purple-500"
               onClick={handleSendData}
             >
-              Edit
+              Update
             </Button>
           </DialogClose>
         </DialogFooter>

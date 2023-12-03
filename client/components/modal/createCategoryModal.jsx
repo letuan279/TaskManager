@@ -12,23 +12,45 @@ import { Textarea } from "@/components/ui/textarea";
 import "froala-editor/css/froala_style.min.css";
 import "froala-editor/css/froala_editor.pkgd.min.css";
 import { Check } from "lucide-react";
+import { DialogClose } from "@radix-ui/react-dialog";
+import { useDispatch } from "react-redux";
+import { addCategory } from "@/redux/categoriesSlice";
+import { toast } from "react-toastify";
 
 export function CreateCategoryModal({ children }) {
-  const [title, setTitle] = React.useState("");
+  const [name, setName] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [color, setColor] = React.useState("");
   const colors = ["red", "green", "blue", "yellow", "purple", "pink"];
 
+  const handleColorChange = (e) => {
+    setColor(e.target.id);
+  };
+
+  const dispatch = useDispatch()
+
   const handleSendData = () => {
-    console.log({
-      title,
+    dispatch(addCategory({
+      name,
       description,
       color,
+    })).unwrap()
+    .then(() => {
+      toast.success("Create new category successfully!");
+    })
+    .catch((error) => {
+      toast.error(error.message || "Something was wrong!");
     });
   };
 
+  const handleClearData = () => {
+    setName("")
+    setDescription("")
+    setColor("")
+  }
+
   return (
-    <Dialog>
+    <Dialog onOpenChange={handleClearData}>
       {children}
       <DialogContent className="sm:max-w-[50%]">
         <DialogHeader>
@@ -40,7 +62,7 @@ export function CreateCategoryModal({ children }) {
           <Input
             color="blue"
             label="Category name"
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
           />
           <div>
             <label

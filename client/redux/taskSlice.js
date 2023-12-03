@@ -18,6 +18,54 @@ export const fetchTasks = createAsyncThunk(
     }
 )
 
+export const deleteTask = createAsyncThunk(
+    "tasks/deleteTask",
+    async (id, { rejectWithValue }) => {
+        try {
+            const response = await apiClient.delete(`/tasks/${id}`);
+            return id;
+        } catch (error) {
+            if (!error.response) {
+                throw error;
+            }
+            return rejectWithValue(error.response.data);
+        }
+    }
+)
+
+export const addTask = createAsyncThunk(
+    'tasks/addTask',
+    async (payload, { rejectWithValue }) => {
+        try {
+            payload.user = "655a1d62787fe99d2289b2f7"
+            payload.status = 1
+            const response = await apiClient.post(`/tasks/create`, payload);
+            return response.data.data.task;
+        } catch (error) {
+            if (!error.response) {
+                throw error;
+            }
+            return rejectWithValue(error.response.data);
+        }
+    }
+)
+
+export const editTask = createAsyncThunk(
+    'tasks/editTask',
+    async ({ id, payload }, { rejectWithValue }) => {
+        try {
+            payload.user = "655a1d62787fe99d2289b2f7"
+            const response = await apiClient.put(`/tasks/${id}`, payload);
+            return response.data.data.task;
+        } catch (error) {
+            if (!error.response) {
+                throw error;
+            }
+            return rejectWithValue(error.response.data);
+        }
+    }
+)
+
 export const tasksSlice = createSlice({
     name: 'tasks',
     initialState: {
@@ -36,7 +84,42 @@ export const tasksSlice = createSlice({
         },
         [fetchTasks.rejected]: (state, action) => {
             state.status = 'failed';
-            console.log("FAILED CASE::ACTION::", { action });
+            state.error = action.payload.message;
+        },
+        [deleteTask.pending]: (state, action) => {
+            state.status = 'loading';
+        },
+        [deleteTask.fulfilled]: (state, action) => {
+            state.status = 'succeeded';
+            state.data = state.data.filter(item => item._id !== action.payload)
+        },
+        [deleteTask.rejected]: (state, action) => {
+            state.status = 'failed';
+            state.error = action.payload.message;
+        },
+        [addTask.pending]: (state, action) => {
+            state.status = 'loading';
+        },
+        [addTask.fulfilled]: (state, action) => {
+            state.status = 'succeeded';
+            state.data.push(action.payload)
+        },
+        [addTask.rejected]: (state, action) => {
+            state.status = 'failed';
+            state.error = action.payload.message;
+        },
+        [editTask.pending]: (state, action) => {
+            state.status = 'loading';
+        },
+        [editTask.fulfilled]: (state, action) => {
+            state.status = 'succeeded';
+            const editedTaskIndex = state.data.findIndex(item => item._id === action.payload._id);
+            if (editedTaskIndex !== -1) {
+                state.data[editedTaskIndex] = action.payload;
+            }
+        },
+        [editTask.rejected]: (state, action) => {
+            state.status = 'failed';
             state.error = action.payload.message;
         },
     }
