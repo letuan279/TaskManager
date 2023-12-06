@@ -153,6 +153,40 @@ class TaskController {
             next(error);
         }
     };
+
+    search = async (req, res, next) => {
+        const startDate = req.params.startDate
+        const endDate = req.params.endDate
+
+        const start = new Date(startDate)
+        const end = new Date(endDate)
+        start.setHours(0);
+        start.setMinutes(0);
+        start.setSeconds(0);
+        start.setMilliseconds(0);
+        end.setHours(23);
+        end.setMinutes(59);
+        end.setSeconds(59);
+        end.setMilliseconds(999);
+
+        try {
+            const tasks = await Task.find().lean();
+            const results = tasks.filter(task => {
+                if (new Date(task.start_day).getTime() >= start.getTime()
+                    && new Date(task.end_day).getTime() <= end.getTime()) {
+                    return true
+                }
+                return false
+            })
+
+            return res.status(200).json({
+                code: "20000",
+                data: results
+            });
+        } catch (error) {
+            next(error);
+        }
+    };
 }
 
 module.exports = new TaskController()

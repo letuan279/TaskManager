@@ -90,6 +90,14 @@ const validateTaskFields = (req, res, next) => {
         });
     }
 
+    if (new Date(start_day).getTime() >= new Date(end_day).getTime()) {
+        return res.status(400).json({
+            code: "40000",
+            data: [],
+            message: "Start time & End time are conflicted",
+        });
+    }
+
     next()
 }
 

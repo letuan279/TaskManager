@@ -53,3 +53,6 @@ content-type: application/json
 
 # Delete a task
 DELETE {{dev_url}}/tasks/655b193ac486fae187942315
+
+# Search by day
+GET {{dev_url}}/tasks/search/2023-11-27/2023-11-27
