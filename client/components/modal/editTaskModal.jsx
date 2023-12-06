@@ -175,8 +175,8 @@ export function EditTaskModal({ children, task }) {
                                 onChange={handleCategoryChange}
                                 placeholder="Choose category"
                             >
-                                {categories.data.map(item => (
-                                    <option value={item._id}>{item.name}</option>
+                                {categories.data.map((item, i) => (
+                                    <option key={i + "sdsd"} value={item._id}>{item.name}</option>
                                     ))}
                             </select>
                         </div>

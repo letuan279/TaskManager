@@ -69,7 +69,7 @@ export default function RootLayout({
               <SidebarCategoryItem />
             </Sidebar>
 
-            <div className="w-screen h-screen">
+            <div className="w-screen h-screen max-h-screen max-w-screen">
               <Navbar />
               {children}
               <ToastContainer />

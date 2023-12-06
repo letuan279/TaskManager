@@ -180,7 +180,13 @@ const DateTimePicker = (props: DatePickerProps) => {
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent ref={contentRef} className="w-auto" align="start">
+      <PopoverContent
+        ref={contentRef}
+        className="w-auto"
+        align="start"
+        sideOffset={1}
+        side="right"
+      >
         <Calendar
           mode="single"
           selected={props.value?.date || undefined}

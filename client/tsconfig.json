@@ -22,6 +22,6 @@
       "@/*": ["./*"],
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/**/*.tsx", "components/modal/createTaskModal.jsx", "components/ui/date-picker.jsx", "components/modal/createCategoryModal.jsx", "components/modal/editCategoryModal.jsx", "app/page.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/**/*.tsx", "components/modal/createTaskModal.jsx", "components/ui/date-picker.jsx", "components/modal/createCategoryModal.jsx", "components/modal/editCategoryModal.jsx", "app/page.tsx"],
   "exclude": ["node_modules"]
 }

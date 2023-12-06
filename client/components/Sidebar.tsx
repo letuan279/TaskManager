@@ -9,17 +9,18 @@ import { fetchCategories } from "@/redux/categoriesSlice";
 
 import { CategoryType } from "../app/category/[slug]/page";
 import { Search } from "lucide-react";
+import { fetchTasks } from "@/redux/taskSlice";
 
 export default function Sidebar({ children }: { children: React.ReactNode }) {
   return (
-    <aside className="h-screen w-fit">
+    <aside className="h-screen w-fit w-[250px]">
       <nav className="h-full flex flex-col bg-white border-r shadow-sm">
         <div className="p-4 pb-2 flex items-center gap-3">
           <img
             src="/logo.png"
             className={`w-32 overflow-hidden transition-all`}
             alt=""
-            style={{ width: "40px", height: "40px" }}
+            style={{ width: "35px", height: "35px" }}
           />
           <span className="font-bold text-2xl">Trackit</span>
         </div>
@@ -98,6 +99,7 @@ export function SidebarCategoryItem() {
 
   useEffect(() => {
     dispatch(fetchCategories());
+    dispatch(fetchTasks());
   }, [dispatch]);
 
   return (

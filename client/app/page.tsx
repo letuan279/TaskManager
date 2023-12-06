@@ -1,35 +1,17 @@
 "use client";
-import React from "react";
+
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import { CreateTaskModal } from "@/components/modal/createTaskModal";
-import { DialogTrigger } from "@radix-ui/react-dialog";
-import { Button } from "@/components/ui/button";
 
-import { convertTaskSchedule } from "../../utils/task";
-import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
+
+import { convertTaskSchedule } from "@/utils/task";
 import { DetailTaskModal } from "@/components/modal/detailTaskModal";
+import { DialogTrigger } from "@/components/ui/dialog";
 
-function Schedule() {
+export default function Home() {
   const eventContent = (arg) => {
-    const isMonthView = arg.view.type === "dayGridMonth";
-    if (isMonthView) {
-      return (
-        <DetailTaskModal
-          key={arg.event.extendedProps.task._id}
-          task={arg.event.extendedProps.task}
-        >
-          <DialogTrigger asChild>
-            <div className="cursor-pointer">
-              <div>{arg.event.title}</div>
-            </div>
-          </DialogTrigger>
-        </DetailTaskModal>
-      );
-    }
-
     return (
       <DetailTaskModal
         key={arg.event.extendedProps.task._id}
@@ -61,32 +43,23 @@ function Schedule() {
 
   return (
     <div className="p-10">
-      <div className="text-4xl font-bold">Schedule</div>
+      <div className="text-4xl font-bold">Hello Lê Anh Tuấn ☕</div>
       <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin]}
-        initialView="timeGridWeek"
+        plugins={[timeGridPlugin]}
+        initialView="timeGridDay"
         headerToolbar={{
           start: "prev,next",
           center: "title",
-          end: "timeGridWeek,dayGridMonth   ",
+          end: "today",
         }}
         allDaySlot={false}
+        slotMinTime={"00:00"}
         height={530}
         events={convertTaskSchedule(tasks.data, categories.data)}
-        eventContent={eventContent}
         eventDisplay="block"
+        eventContent={eventContent}
         scrollTime={"00:00:00"}
       />
-
-      <div className="fixed" style={{ top: "146px", right: "35px" }}>
-        <CreateTaskModal>
-          <DialogTrigger asChild>
-            <Button className="bg-blue-400 rounded-2xl">Create</Button>
-          </DialogTrigger>
-        </CreateTaskModal>
-      </div>
     </div>
   );
 }
-
-export default Schedule;
