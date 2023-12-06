@@ -32,12 +32,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import Notification from "./notification";
+
 function Navbar() {
   return (
     <div className="w-full h-fit p-2 flex items-center justify-between border-b-2">
       <SearchBar />
       <div className="flex items-center gap-4">
-        <Bell size={25} />
+        <Notification />
         <div className="flex items-center gap-4">
           <div className="flex flex-col place-items-end">
             <span className="font-bold">Lê Anh Tuấn</span>
