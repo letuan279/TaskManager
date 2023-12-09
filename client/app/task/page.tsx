@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import {
   Select,
   SelectContent,
+  SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -41,8 +42,21 @@ export type Tasks = {
   done: TaskType[];
 };
 
+function getFilterDateMinusNumber(option: string) {
+  switch (option) {
+    case "yesterday":
+      return -1;
+    case "tomorrow":
+      return 1;
+    case "today":
+    default:
+      return 0;
+  }
+}
+
 function Task() {
   // const [tasks, setTasks] = useState<Tasks>();
+  const [filterDay, setFilterDay] = useState("today");
 
   const dispatch = useDispatch<AppDispatch>();
   const { data, status, error } = useSelector(
@@ -58,6 +72,21 @@ function Task() {
     toast.error(error);
   }
 
+  const day = new Date();
+  day.setDate(day.getDate() + getFilterDateMinusNumber(filterDay));
+  day.setHours(0, 0, 0, 0);
+
+  const handleFilterTasks = (task: TaskType) => {
+    const startDate = new Date(task.start_day);
+    startDate.setHours(0, 0, 0, 0);
+    const endDate = new Date(task.end_day);
+    endDate.setHours(0, 0, 0, 0);
+
+    return (
+      startDate.getTime() <= day.getTime() && day.getTime() <= endDate.getTime()
+    );
+  };
+
   return (
     <div className="pt-8 px-12 space-y-6 h-4/6">
       <div className="text-4xl">TASK</div>
@@ -69,11 +98,18 @@ function Task() {
             <TabsTrigger value="done">Done</TabsTrigger>
           </TabsList>
           <div className="flex flex-row space-x-4">
-            <Select>
+            <Select
+              value={filterDay}
+              onValueChange={(value) => setFilterDay(value)}
+            >
               <SelectTrigger className="w-40">
                 <SelectValue placeholder="Filter..." />
               </SelectTrigger>
-              <SelectContent></SelectContent>
+              <SelectContent>
+                <SelectItem value="yesterday">yesterday</SelectItem>
+                <SelectItem value="today">today</SelectItem>
+                <SelectItem value="tomorrow">tomorrow</SelectItem>
+              </SelectContent>
             </Select>
             <Select>
               <SelectTrigger className="w-40">
@@ -94,6 +130,7 @@ function Task() {
               {data.length > 0 &&
                 data
                   .filter((task: TaskType) => task.status === 1)
+                  .filter(handleFilterTasks)
                   .map((task: TaskType) => (
                     <TaskComponent key={task._id} task={task} />
                   ))}
@@ -106,6 +143,7 @@ function Task() {
               {data.length > 0 &&
                 data
                   .filter((task: TaskType) => task.status === 2)
+                  .filter(handleFilterTasks)
                   .map((task: TaskType) => (
                     <TaskComponent key={task._id} task={task} />
                   ))}
@@ -118,6 +156,7 @@ function Task() {
               {data.length > 0 &&
                 data
                   .filter((task: TaskType) => task.status === 3)
+                  .filter(handleFilterTasks)
                   .map((task: TaskType) => (
                     <TaskComponent key={task._id} task={task} />
                   ))}

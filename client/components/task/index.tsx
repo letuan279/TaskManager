@@ -151,14 +151,14 @@ export const MiniTaskComponent = ({ task }: InputType) => {
           <div className="flex items-center">
             <div
               className={`w-3 h-3 rounded-full`}
-              style={{ backgroundColor: category.color }}
+              style={{ backgroundColor: category?.color }}
             ></div>
             <span
               className={
                 "font-medium w-fit ml-3 text-sm overflow-hidden transition-all"
               }
             >
-              {category.name}
+              {category?.name}
             </span>
           </div>
           <div className="text-priority-high flex flex-row items-center space-x-2 gap-2">
