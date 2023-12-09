@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 import { Search, Bell, ChevronDown } from "lucide-react";
 import {
@@ -31,12 +32,30 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import Link from "next/link";
+import { Collapsible } from "@radix-ui/react-collapsible";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from "./ui/command";
+import { CollapsibleContent } from "./ui/collapsible";
+import { ScrollArea } from "./ui/scroll-area";
+import { DetailTaskModal } from "./modal/detailTaskModal";
+import { DialogTrigger } from "@radix-ui/react-dialog";
 
 import Notification from "./notification";
 
 function Navbar() {
   return (
     <div className="w-full h-fit p-2 flex items-center justify-between border-b-2">
+      <div></div>
       <SearchBar />
       <div className="flex items-center gap-4">
         <Notification />
@@ -59,14 +78,66 @@ function Navbar() {
 }
 
 function SearchBar() {
+  const tasks = useSelector((state: RootState) => state.tasks);
+  const categories = useSelector((state: RootState) => state.categories);
+  const [open, setOpen] = React.useState(false);
+  const [searchedValue, setSearchedValue] = React.useState("");
+  const searchRef = React.useRef(null);
+
+  React.useEffect(() => {
+    function handleClickOutSide(event) {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    }
+
+    document.addEventListener("click", handleClickOutSide);
+    return () => {
+      document.removeEventListener("click", handleClickOutSide);
+    };
+  }, []);
+
   return (
-    <div className="ml-40 w-96 input-wrapper h-10 border-none rounded-2xl px-4 bg-gray-100 flex items-center">
-      <Search size={20} />
-      <input
-        placeholder="Type to search..."
-        className="bg-transparent border-none h-full text-lg w-full ml-2 focus:outline-none"
-      />
-    </div>
+    <Collapsible className="w-96" open={open}>
+      <Command className="border max-w-xl rounded-md">
+        <CommandInput
+          placeholder="search for..."
+          onValueChange={(search) => setSearchedValue(search)}
+          onFocus={() => setOpen(true)}
+          ref={searchRef}
+        />
+        <CollapsibleContent className="">
+          <CommandList className="absolute z-10 bg-background w-96 max-h-96 overflow-y-auto">
+            <CommandEmpty>No data</CommandEmpty>
+            <CommandGroup heading="Task">
+              {tasks &&
+                tasks.data
+                  .filter((task) => task.name.search(searchedValue) > -1)
+                  .map((task, index) => (
+                    <CommandItem key={task._id}>
+                      <DetailTaskModal task={task} key={task._id}>
+                        <DialogTrigger asChild>
+                          <div>{task.name}</div>
+                        </DialogTrigger>
+                      </DetailTaskModal>
+                    </CommandItem>
+                  ))}
+            </CommandGroup>
+            <CommandSeparator />
+            <CommandGroup heading="Category">
+              {categories &&
+                categories.data
+                  .filter((cate) => cate.name.search(searchedValue) > -1)
+                  .map((cate, index) => (
+                    <CommandItem key={cate._id}>
+                      <Link href={`category/${cate._id}`}>{cate.name}</Link>
+                    </CommandItem>
+                  ))}
+            </CommandGroup>
+          </CommandList>
+        </CollapsibleContent>
+      </Command>
+    </Collapsible>
   );
 }
 
