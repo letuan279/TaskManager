@@ -56,7 +56,7 @@ function getFilterDateMinusNumber(option: string) {
 
 function Task() {
   // const [tasks, setTasks] = useState<Tasks>();
-  const [filterDay, setFilterDay] = useState("today");
+  const [filterDay, setFilterDay] = useState("filter");
 
   const dispatch = useDispatch<AppDispatch>();
   const { data, status, error } = useSelector(
@@ -82,6 +82,10 @@ function Task() {
     const endDate = new Date(task.end_day);
     endDate.setHours(0, 0, 0, 0);
 
+    if (filterDay === "filter") {
+      return true;
+    }
+
     return (
       startDate.getTime() <= day.getTime() && day.getTime() <= endDate.getTime()
     );
@@ -106,6 +110,7 @@ function Task() {
                 <SelectValue placeholder="Filter..." />
               </SelectTrigger>
               <SelectContent>
+                <SelectItem value="filter">filter</SelectItem>
                 <SelectItem value="yesterday">yesterday</SelectItem>
                 <SelectItem value="today">today</SelectItem>
                 <SelectItem value="tomorrow">tomorrow</SelectItem>

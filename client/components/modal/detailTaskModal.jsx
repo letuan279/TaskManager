@@ -37,28 +37,6 @@ export function DetailTaskModal({ children, task }) {
         (state) => state.categories
       );
 
-    const handlePriorityChange = (value) => {
-        setPriority(value);
-    };
-    const handleColorChange = (e) => {
-        setColor(e.target.id);
-    };
-    const handleCategoryChange = (e) => {
-        setCategory(e.target.value);
-    };
-
-    const handleSendData = () => {
-        console.log({
-            title,
-            category,
-            priority,
-            startDate,
-            endDate,
-            description,
-            color,
-        });
-    };
-
     return (
         <Dialog>
             {children}
