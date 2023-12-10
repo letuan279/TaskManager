@@ -20,6 +20,10 @@ import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { login } from "@/redux/userSlice";
+import { toast } from "react-toastify";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -41,12 +45,19 @@ export default function Login() {
     },
   });
 
+  const dispatch = useDispatch<AppDispatch>();
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-    localStorage.setItem("token", "valid_token");
-    router.push("/");
+    dispatch(login(values))
+      .unwrap()
+      .then(() => {
+        router.push("/");
+        toast.success("Login was successful");
+      })
+      .catch((error) => {
+        toast.error(
+          error.message || "It seems like something error is happening!"
+        );
+      });
   }
 
   return (
@@ -106,9 +117,6 @@ export default function Login() {
               >
                 Login
               </Button>
-              <div className="w-full text-right hover:underline">
-                <Link href="#">Forgot password</Link>
-              </div>
             </form>
           </Form>
         </div>

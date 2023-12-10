@@ -49,18 +49,6 @@ function CategoryDetail({ params }: { params: { slug: string } }) {
       <Tabs defaultValue="todo" className="space-y-8 h-full">
         <div className="h-fit flex flex-row justify-between items-center">
           <div className="flex flex-row space-x-4">
-            <Select>
-              <SelectTrigger className="w-40">
-                <SelectValue placeholder="Filter..." />
-              </SelectTrigger>
-              <SelectContent></SelectContent>
-            </Select>
-            <Select>
-              <SelectTrigger className="w-40">
-                <SelectValue placeholder="Select date..." />
-              </SelectTrigger>
-              <SelectContent></SelectContent>
-            </Select>
             {/* <Button>Create</Button> */}
           </div>
         </div>

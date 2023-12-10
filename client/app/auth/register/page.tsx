@@ -20,11 +20,18 @@ import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { register } from "@/redux/userSlice";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
   username: z.string().min(1, { message: "Username is required" }),
   password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters" }),
+  confirmPassword: z
     .string()
     .min(8, { message: "Password must be at least 8 characters" }),
 });
@@ -36,16 +43,29 @@ export default function Register() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
-      username: "",
+      name: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
+  const dispatch = useDispatch<AppDispatch>();
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-    router.push("/auth/login");
+    if (values.password !== values.confirmPassword) {
+      toast.error("Password and confirmation password do not match");
+      return;
+    }
+    dispatch(register(values))
+      .unwrap()
+      .then(() => {
+        router.push("/");
+        toast.success("You have successfully created an account");
+      })
+      .catch((error) => {
+        toast.error(
+          error.message || "It seems like something error is happening!"
+        );
+      });
   }
 
   return (
@@ -61,6 +81,19 @@ export default function Register() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField
                 control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
                 name="email"
                 render={({ field }) => (
                   <FormItem>
@@ -74,10 +107,10 @@ export default function Register() {
               />
               <FormField
                 control={form.control}
-                name="username"
+                name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>Password</FormLabel>
                     <FormControl>
                       <Input placeholder="" {...field} />
                     </FormControl>
@@ -87,10 +120,10 @@ export default function Register() {
               />
               <FormField
                 control={form.control}
-                name="password"
+                name="confirmPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>Confirm Password</FormLabel>
                     <FormControl>
                       <Input placeholder="" {...field} />
                     </FormControl>

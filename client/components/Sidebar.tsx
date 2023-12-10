@@ -95,13 +95,6 @@ export function SidebarCategoryItem() {
   const dispatch = useDispatch<AppDispatch>();
   const categories = useSelector((state: RootState) => state.categories);
 
-  console.log(categories);
-
-  useEffect(() => {
-    dispatch(fetchCategories());
-    dispatch(fetchTasks());
-  }, [dispatch]);
-
   return (
     <>
       <SearchBar />

@@ -40,10 +40,11 @@ export default function Home() {
 
   const tasks = useSelector((state: RootState) => state.tasks);
   const categories = useSelector((state: RootState) => state.categories);
+  const user = useSelector((state: RootState) => state.user);
 
   return (
     <div className="p-10">
-      <div className="text-4xl font-bold">Hello Lê Anh Tuấn ☕</div>
+      <div className="text-4xl font-bold">Hello {user.data.name} ☕</div>
       <FullCalendar
         plugins={[timeGridPlugin]}
         initialView="timeGridDay"

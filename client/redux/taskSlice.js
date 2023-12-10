@@ -1,10 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import apiClient from '../api/apiClient'
 
+const setupToken = () => {
+    if (localStorage.getItem('token')) {
+        apiClient.defaults.headers.authorization = "Bearer " + localStorage.getItem('token')
+    }
+}
+
 export const fetchTasks = createAsyncThunk(
     "tasks/fetchTasks",
     async (arg, { rejectWithValue }) => {
         try {
+            setupToken()
             const response = await apiClient.post('/tasks', {
                 "user": "655a1d62787fe99d2289b2f7"
             });
@@ -22,6 +29,7 @@ export const deleteTask = createAsyncThunk(
     "tasks/deleteTask",
     async (id, { rejectWithValue }) => {
         try {
+            setupToken()
             const response = await apiClient.delete(`/tasks/${id}`);
             return id;
         } catch (error) {
@@ -37,6 +45,7 @@ export const addTask = createAsyncThunk(
     'tasks/addTask',
     async (payload, { rejectWithValue }) => {
         try {
+            setupToken()
             payload.user = "655a1d62787fe99d2289b2f7"
             payload.status = 1
             const response = await apiClient.post(`/tasks/create`, payload);
@@ -54,6 +63,7 @@ export const editTask = createAsyncThunk(
     'tasks/editTask',
     async ({ id, payload }, { rejectWithValue }) => {
         try {
+            setupToken()
             payload.user = "655a1d62787fe99d2289b2f7"
             const response = await apiClient.put(`/tasks/${id}`, payload);
             return response.data.data.task;

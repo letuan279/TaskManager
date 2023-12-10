@@ -47,8 +47,6 @@ function Category() {
     toast.error(error);
   }
 
-  console.log("CATEGORY:::", data);
-
   return (
     <div className="pt-8 px-12 space-y-6 h-4/5">
       <div className="flex flex-row justify-between items-center">

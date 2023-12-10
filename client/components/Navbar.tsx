@@ -63,6 +63,8 @@ import { Input } from "./ui/input";
 import { useRouter } from "next/navigation";
 
 function Navbar() {
+  const user = useSelector((state: RootState) => state.user);
+
   return (
     <div className="w-full h-fit p-2 flex items-center justify-between border-b-2">
       <div></div>
@@ -71,7 +73,7 @@ function Navbar() {
         <Notification />
         <div className="flex items-center gap-4">
           <div className="flex flex-col place-items-end">
-            <span className="font-bold">Lê Anh Tuấn</span>
+            <span className="font-bold">{user.data.name}</span>
             <span className="text-green-500 font-bold">🟢 online</span>
           </div>
           <div className="w-12 h-12 rounded-full overflow-hidden border">

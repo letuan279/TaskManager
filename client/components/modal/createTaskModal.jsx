@@ -43,7 +43,7 @@ export function CreateTaskModal({ children }) {
     setStart_day(new Date())
     setEnd_day(new Date())
     setName("")
-    setCategory("")
+    setCategory(categories.data[0]?._id)
     setPriority("")
     setDescription("")
     setColor("")
@@ -74,6 +74,7 @@ export function CreateTaskModal({ children }) {
     });
   };
 
+  console.log("Category:::", category);
 
   return (
     <Dialog onOpenChange={handleClearData}>
@@ -92,7 +93,7 @@ export function CreateTaskModal({ children }) {
           <div className="flex flex-row">
             <div className="w-1/2">
               <label
-                for="countries"
+                htmlFor="countries"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 priority
@@ -108,7 +109,7 @@ export function CreateTaskModal({ children }) {
                   />
                   <label
                     className="flex flex-col h-10 w-24 border-2 border-red-500 text-red-500 cursor-pointer rounded-full justify-center items-center  peer-checked:ring-red-500 peer-checked:bg-red-500 peer-checked:ring-2 peer-checked:border-transparent peer-checked:text-white"
-                    for="radio_1"
+                    htmlFor="radio_1"
                   >
                     <span className="text-xs font-bold uppercase">high</span>
                   </label>
@@ -123,7 +124,7 @@ export function CreateTaskModal({ children }) {
                   />
                   <label
                     className="flex flex-col h-10 w-24 border-2 border-yellow-600 text-yellow-600 cursor-pointer rounded-full justify-center items-center  peer-checked:ring-yellow-600 peer-checked:bg-yellow-600 peer-checked:ring-2 peer-checked:border-transparent peer-checked:text-white"
-                    for="radio_2"
+                    htmlFor="radio_2"
                   >
                     <span className="text-xs font-bold uppercase">normal</span>
                   </label>
@@ -138,7 +139,7 @@ export function CreateTaskModal({ children }) {
                   />
                   <label
                     className="flex flex-col h-10 w-24 border-2 border-green-500 text-green-500 cursor-pointer rounded-full justify-center items-center  peer-checked:ring-green-500 peer-checked:bg-green-500 peer-checked:ring-2 peer-checked:border-transparent peer-checked:text-white"
-                    for="radio_3"
+                    htmlFor="radio_3"
                   >
                     <span className="text-xs font-bold uppercase">low</span>
                   </label>
@@ -147,7 +148,7 @@ export function CreateTaskModal({ children }) {
             </div>
             <div className="w-1/2">
               <label
-                for="countries"
+                htmlFor="countries"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 Category
@@ -168,7 +169,7 @@ export function CreateTaskModal({ children }) {
           <div className="flex flex-row">
             <div className="w-1/2">
               <label
-                for="countries"
+                htmlFor="countries"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 Start date
@@ -177,7 +178,7 @@ export function CreateTaskModal({ children }) {
             </div>
             <div className="w-1/2">
               <label
-                for="countries"
+                htmlFor="countries"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 End date
@@ -187,7 +188,7 @@ export function CreateTaskModal({ children }) {
           </div>
           <div>
             <label
-              for="countries"
+              htmlFor="countries"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Description
@@ -205,7 +206,7 @@ export function CreateTaskModal({ children }) {
           </div>
           <div>
             <label
-              for="countries"
+              htmlFor="countries"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Color
@@ -222,7 +223,7 @@ export function CreateTaskModal({ children }) {
                     />
                     <label
                       className={`flex flex-col h-10 w-10 border-2 bg-${color}-500 border-${color}-500 text-${color}-500 cursor-pointer rounded-full justify-center items-center  peer-checked:ring-${color}-500 peer-checked:bg-${color}-500 peer-checked:ring-2 peer-checked:border-transparent peer-checked:text-white`}
-                      for={color}
+                      htmlFor={color}
                     >
                       <Check />
                     </label>

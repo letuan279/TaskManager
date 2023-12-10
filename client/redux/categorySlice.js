@@ -1,10 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import apiClient from '../api/apiClient';
 
+const setupToken = () => {
+    if (localStorage.getItem('token')) {
+        apiClient.defaults.headers.authorization = "Bearer " + localStorage.getItem('token')
+    }
+}
+
 export const fetchCategories = createAsyncThunk(
     'categories/fetchCategory',
     async (arg, { rejectWithValue }) => {
         try {
+            setupToken()
             const response = await apiClient.post('/categories', {
                 "user": "655a1d62787fe99d2289b2f7"
             });
@@ -22,6 +29,7 @@ export const addCategory = createAsyncThunk(
     'categories/addCategory',
     async (payload, { rejectWithValue }) => {
         try {
+            setupToken()
             payload.user = "655a1d62787fe99d2289b2f7"
             const response = await apiClient.post(`/categories/create`, payload);
             return response.data.data.category;
@@ -38,6 +46,7 @@ export const editCategory = createAsyncThunk(
     'categories/editCategory',
     async ({ id, payload }, { rejectWithValue }) => {
         try {
+            setupToken()
             payload.user = "655a1d62787fe99d2289b2f7"
             const response = await apiClient.put(`/categories/${id}`, payload);
             return response.data.data.category;
@@ -54,6 +63,7 @@ export const deleteCategory = createAsyncThunk(
     "categories/deleteCategory",
     async (id, { rejectWithValue }) => {
         try {
+            setupToken()
             const response = await apiClient.delete(`/categories/${id}`);
             return id;
         } catch (error) {

@@ -35,8 +35,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <AuthProvider>
-      <ReduxProvider>
+    <ReduxProvider>
+      <AuthProvider>
         <html lang="en">
           <body className={inter.className}>
             <div className="w-screen h-screen flex">
@@ -79,7 +79,7 @@ export default function RootLayout({
             </div>
           </body>
         </html>
-      </ReduxProvider>
-    </AuthProvider>
+      </AuthProvider>
+    </ReduxProvider>
   );
 }
