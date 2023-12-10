@@ -60,6 +60,7 @@ import { DateTimePicker } from "./ui/date-time-picker";
 
 import Notification from "./notification";
 import { Input } from "./ui/input";
+import { useRouter } from "next/navigation";
 
 function Navbar() {
   return (
@@ -345,6 +346,13 @@ function SearchBar() {
 }
 
 function DropdownMenuCustom() {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    router.push("auth/login");
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -424,7 +432,7 @@ function DropdownMenuCustom() {
           <span>API</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={handleLogout}>
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>

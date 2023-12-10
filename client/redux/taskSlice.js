@@ -84,7 +84,7 @@ export const tasksSlice = createSlice({
         },
         [fetchTasks.rejected]: (state, action) => {
             state.status = 'failed';
-            state.error = action.payload.message;
+            state.error = action.payload?.message;
         },
         [deleteTask.pending]: (state, action) => {
             state.status = 'loading';

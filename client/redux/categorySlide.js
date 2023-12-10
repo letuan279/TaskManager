@@ -83,7 +83,7 @@ export const categoriesSlice = createSlice({
         },
         [fetchCategories.rejected]: (state, action) => {
             state.status = 'failed';
-            state.error = action.payload.message;
+            state.error = action.payload?.message;
         },
         [addCategory.pending]: (state, action) => {
             state.status = 'loading';
