@@ -1,8 +1,26 @@
-'use strict'
+@dev_url=http://localhost:8080/api/v1/
 
-const express = require('express')
-const router = express.Router()
+### 
+GET {{dev_url}}/user/check
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTc0MGVlYzU2YTRiZTAxNWEzMjFlYjkiLCJpYXQiOjE3MDIxMDQ4MTJ9.8juk1yZ7tNmkN6vvsHH0o6BCN8HhzFk5yWRG8iQck_4
 
-router.use("/api/v1", require('./user'))
+### 
 
-module.exports = router
+POST {{dev_url}}/user/login
+Content-Type: application/json
+
+{
+    "email": "tuan@gmail.com",
+    "password": "1234"
+}
+
+###
+
+POST {{dev_url}}/user/register
+Content-Type: application/json
+
+{
+    "name": "tuan",
+    "email": "tuan@gmail.com",
+    "password": "1234"
+}

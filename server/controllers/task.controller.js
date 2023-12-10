@@ -6,9 +6,7 @@ const User = require('../models/user.model')
 class TaskController {
     index = async (req, res, next) => {
         try {
-            const { user } = req.body
-
-            if (!mongoose.Types.ObjectId.isValid(user)) {
+            if (!mongoose.Types.ObjectId.isValid(req.userId)) {
                 return res.status(400).json({
                     code: "40000",
                     message: "Invalid user ID",
@@ -16,7 +14,7 @@ class TaskController {
                 });
             }
 
-            const currUser = await User.findById(user)
+            const currUser = await User.findById(req.userId)
             if (!currUser) {
                 return res.status(404).json({
                     code: "40400",
@@ -39,7 +37,7 @@ class TaskController {
 
     store = async (req, res, next) => {
         try {
-            const { name, start_day, end_day, color, description, user, category, status, priority } = req.body;
+            const { name, start_day, end_day, color, description, category, status, priority } = req.body;
 
             const task = new Task({
                 name,
@@ -47,7 +45,7 @@ class TaskController {
                 end_day,
                 color,
                 description,
-                user,
+                user: req.userId,
                 category,
                 status,
                 priority,
@@ -92,7 +90,7 @@ class TaskController {
     update = async (req, res, next) => {
         try {
             const taskId = req.params.id;
-            const { name, start_day, end_day, color, description, user, category, status, priority } = req.body;
+            const { name, start_day, end_day, color, description, category, status, priority } = req.body;
 
             const task = await Task.findByIdAndUpdate(
                 taskId,
@@ -102,7 +100,7 @@ class TaskController {
                     end_day,
                     color,
                     description,
-                    user,
+                    user: req.userId,
                     category,
                     status,
                     priority,

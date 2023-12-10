@@ -7,9 +7,7 @@ const Task = require('../models/task.model');
 class CategoryController {
     index = async (req, res, next) => {
         try {
-            const { user } = req.body;
-
-            if (!mongoose.Types.ObjectId.isValid(user)) {
+            if (!mongoose.Types.ObjectId.isValid(req.userId)) {
                 return res.status(400).json({
                     code: "40000",
                     message: "Invalid user ID",
@@ -17,7 +15,7 @@ class CategoryController {
                 });
             }
 
-            const currUser = await User.findById(user);
+            const currUser = await User.findById(req.userId);
             if (!currUser) {
                 return res.status(404).json({
                     code: "40400",
@@ -40,13 +38,13 @@ class CategoryController {
 
     store = async (req, res, next) => {
         try {
-            const { name, color, description, user } = req.body;
+            const { name, color, description } = req.body;
 
             const category = new Category({
                 name,
                 color,
                 description,
-                user,
+                user: req.userId
             });
 
             await category.save();
@@ -88,7 +86,7 @@ class CategoryController {
     update = async (req, res, next) => {
         try {
             const categoryId = req.params.id;
-            const { name, color, description, user } = req.body;
+            const { name, color, description } = req.body;
 
             const category = await Category.findByIdAndUpdate(
                 categoryId,
@@ -96,7 +94,7 @@ class CategoryController {
                     name,
                     color,
                     description,
-                    user,
+                    user: req.userId,
                 },
                 { new: true }
             ).lean();
