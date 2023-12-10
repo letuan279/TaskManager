@@ -316,7 +316,7 @@ function SearchBar() {
                       (task) => task.name.search(searchedValue) > -1
                     )
                   ).map((task, index) => (
-                    <CommandItem key={task._id}>
+                    <CommandItem key={task._id} value={task.name}>
                       <div onClick={() => handleDetailModal(task)}>
                         {task.name}
                       </div>
@@ -332,7 +332,7 @@ function SearchBar() {
                       (cate) => cate.name.search(searchedValue) > -1
                     )
                   ).map((cate, index) => (
-                    <CommandItem key={cate._id}>
+                    <CommandItem key={cate._id} value={task.name}>
                       <Link href={`/category/${cate._id}`}>{cate.name}</Link>
                     </CommandItem>
                   ))}

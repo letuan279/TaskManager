@@ -20,6 +20,7 @@ import { DetailTaskModal } from "@/components/modal/detailTaskModal.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTasks } from "@/redux/taskSlice";
 import { AppDispatch, RootState } from "@/redux/store";
+import { DatePicker } from "@/components/ui/date-picker";
 
 export type TaskType = {
   _id: string;
@@ -56,7 +57,7 @@ function getFilterDateMinusNumber(option: string) {
 
 function Task() {
   // const [tasks, setTasks] = useState<Tasks>();
-  const [filterDay, setFilterDay] = useState("filter");
+  const [filterDay, setFilterDay] = useState(new Date());
 
   const dispatch = useDispatch<AppDispatch>();
   const { data, status, error } = useSelector(
@@ -72,22 +73,17 @@ function Task() {
     toast.error(error);
   }
 
-  const day = new Date();
-  day.setDate(day.getDate() + getFilterDateMinusNumber(filterDay));
-  day.setHours(0, 0, 0, 0);
-
   const handleFilterTasks = (task: TaskType) => {
     const startDate = new Date(task.start_day);
     startDate.setHours(0, 0, 0, 0);
     const endDate = new Date(task.end_day);
     endDate.setHours(0, 0, 0, 0);
 
-    if (filterDay === "filter") {
-      return true;
-    }
+    const currDate = new Date(filterDay);
 
     return (
-      startDate.getTime() <= day.getTime() && day.getTime() <= endDate.getTime()
+      startDate.getTime() <= currDate.getTime() &&
+      currDate.getTime() <= endDate.getTime()
     );
   };
 
@@ -102,20 +98,9 @@ function Task() {
             <TabsTrigger value="done">Done</TabsTrigger>
           </TabsList>
           <div className="flex flex-row space-x-4">
-            <Select
-              value={filterDay}
-              onValueChange={(value) => setFilterDay(value)}
-            >
-              <SelectTrigger className="w-40">
-                <SelectValue placeholder="Filter..." />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="filter">filter</SelectItem>
-                <SelectItem value="yesterday">yesterday</SelectItem>
-                <SelectItem value="today">today</SelectItem>
-                <SelectItem value="tomorrow">tomorrow</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="h-min">
+              <DatePicker date={filterDay} setDate={setFilterDay} />
+            </div>
             <Select>
               <SelectTrigger className="w-40">
                 <SelectValue placeholder="Select date..." />
