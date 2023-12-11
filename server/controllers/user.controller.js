@@ -103,6 +103,58 @@ class UserController {
             next(error)
         }
     }
+
+    editProfile = async (req, res, next) => {
+        const { email, name, oldPassword, newPassword } = req.body;
+
+        if (!email || !name || !oldPassword || !newPassword) {
+            return res.status(400).json({
+                code: "40000",
+                message: "Registration information is missing",
+                data: []
+            });
+        }
+
+        try {
+            const user = await User.findById(req.userId);
+            const userMail = await User.findOne({ email })
+            if (userMail && userMail._id !== user._id) {
+                return res.status(400).json({
+                    code: "40000",
+                    message: "Email already exists",
+                    data: []
+                })
+            }
+
+            const passwordMatch = await bcrypt.compare(oldPassword, user.password);
+            if (passwordMatch) {
+                const hashedPassword = await bcrypt.hash(newPassword, 10);
+                const editUser = await User.findByIdAndUpdate(
+                    req.userId,
+                    {
+                        name,
+                        email,
+                        password: hashedPassword
+                    },
+                    { new: true }
+                ).lean();
+
+                return res.status(200).json({
+                    code: "20000",
+                    message: "Profile updated successfully",
+                    data: editUser
+                })
+            } else {
+                return res.status(400).json({
+                    code: "40000",
+                    message: "Previous password is incorrect",
+                    data: []
+                })
+            }
+        } catch (error) {
+            next(error)
+        }
+    }
 }
 
 module.exports = new UserController()
