@@ -1,5 +1,23 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import apiClient from '../api/apiClient'
+import { setupToken } from '@/utils/token';
+
+export const edit = createAsyncThunk(
+    'user/edit',
+    async (editForm, { rejectWithValue }) => {
+        try {
+            setupToken()
+            const response = await apiClient.post('/user/edit', editForm)
+            const user = response.data.data
+            return user;
+        } catch (error) {
+            if (!error.response) {
+                throw error;
+            }
+            return rejectWithValue(error.response.data);
+        }
+    }
+)
 
 export const register = createAsyncThunk(
     'user/register',
@@ -93,6 +111,17 @@ export const userSlice = createSlice({
             state.data = action.payload;
         },
         [login.rejected]: (state, action) => {
+            state.status = 'failed';
+            state.error = action.payload?.message;
+        },
+        [edit.pending]: (state, action) => {
+            state.status = 'loading';
+        },
+        [edit.fulfilled]: (state, action) => {
+            state.status = 'succeeded';
+            state.data = action.payload;
+        },
+        [edit.rejected]: (state, action) => {
             state.status = 'failed';
             state.error = action.payload?.message;
         },

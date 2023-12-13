@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { Search, Bell, ChevronDown, Check } from "lucide-react";
+import { Search, Bell, ChevronDown, Check, EyeOff, Eye } from "lucide-react";
 import {
   Cloud,
   CreditCard,
@@ -32,7 +32,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import Link from "next/link";
 import { Collapsible } from "@radix-ui/react-collapsible";
@@ -51,6 +51,7 @@ import { DetailTaskModal } from "./modal/detailTaskModal";
 import {
   Dialog,
   DialogContent,
+  DialogClose,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -61,6 +62,21 @@ import { DateTimePicker } from "./ui/date-time-picker";
 import Notification from "./notification";
 import { Input } from "./ui/input";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import { Button } from "./ui/button";
+
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { edit } from "@/redux/userSlice";
 
 function Navbar() {
   const user = useSelector((state: RootState) => state.user);
@@ -347,100 +363,167 @@ function SearchBar() {
   );
 }
 
+const formSchema = z.object({
+  name: z.string().min(1, { message: "Name is required" }),
+  email: z.string().email({ message: "Invalid email address" }),
+  oldPassword: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters" }),
+  newPassword: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters" }),
+});
+
 function DropdownMenuCustom() {
   const router = useRouter();
+  const [open, setOpen] = React.useState(false);
+  const user = useSelector((state: RootState) => state.user);
+
+  const dispatch = useDispatch();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      oldPassword: "",
+      newPassword: "",
+    },
+  });
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     router.push("auth/login");
+    toast.success("Logout was successful");
   };
 
+  const handleOpen = (e) => {
+    e.preventDefault();
+    form.setValue("name", user.data.name);
+    form.setValue("email", user.data.email);
+    form.setValue("oldPassword", "");
+    form.setValue("newPassword", "");
+    setOpen((value) => !value);
+  };
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    dispatch(edit(values))
+      .unwrap()
+      .then(() => {
+        router.push("/");
+        toast.success("Update was successful");
+      })
+      .catch((error) => {
+        toast.error(
+          error.message || "It seems like something error is happening!"
+        );
+      });
+  }
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <ChevronDown size={25} className="hover:cursor-pointer"></ChevronDown>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <ChevronDown size={25} className="hover:cursor-pointer"></ChevronDown>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-56">
+          <DropdownMenuItem
+            className="hover:cursor-pointer"
+            onClick={(e) => handleOpen(e)}
+          >
             <User className="mr-2 h-4 w-4" />
             <span>Profile</span>
-            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <CreditCard className="mr-2 h-4 w-4" />
-            <span>Billing</span>
-            <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            className="hover:cursor-pointer"
+            onClick={handleLogout}
+          >
+            <LogOut className="mr-2 h-4 w-4" />
+            <span>Logout</span>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Settings className="mr-2 h-4 w-4" />
-            <span>Settings</span>
-            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Keyboard className="mr-2 h-4 w-4" />
-            <span>Keyboard shortcuts</span>
-            <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <Users className="mr-2 h-4 w-4" />
-            <span>Team</span>
-          </DropdownMenuItem>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger>
-              <UserPlus className="mr-2 h-4 w-4" />
-              <span>Invite users</span>
-            </DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuSubContent>
-                <DropdownMenuItem>
-                  <Mail className="mr-2 h-4 w-4" />
-                  <span>Email</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <MessageSquare className="mr-2 h-4 w-4" />
-                  <span>Message</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <PlusCircle className="mr-2 h-4 w-4" />
-                  <span>More...</span>
-                </DropdownMenuItem>
-              </DropdownMenuSubContent>
-            </DropdownMenuPortal>
-          </DropdownMenuSub>
-          <DropdownMenuItem>
-            <Plus className="mr-2 h-4 w-4" />
-            <span>New Team</span>
-            <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <Github className="mr-2 h-4 w-4" />
-          <span>GitHub</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <LifeBuoy className="mr-2 h-4 w-4" />
-          <span>Support</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem disabled>
-          <Cloud className="mr-2 h-4 w-4" />
-          <span>API</span>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleLogout}>
-          <LogOut className="mr-2 h-4 w-4" />
-          <span>Log out</span>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="sm:max-w-[40%]">
+          <DialogHeader>
+            <DialogTitle>Update profile</DialogTitle>
+          </DialogHeader>
+
+          <Form {...form}>
+            <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input placeholder="" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="oldPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Previous password</FormLabel>
+                    <FormControl>
+                      <Input placeholder="" {...field} type={"password"} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="newPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>New password</FormLabel>
+                    <FormControl>
+                      <Input placeholder="" {...field} type={"password"} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="float-right">
+                <Button
+                  onClick={(e) => handleOpen(e)}
+                  className="bg-white text-red-500 rounded-full border-red-500 border-2 mr-6"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  className="bg-purple-500 text-white rounded-full border-purple-500"
+                >
+                  Update
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
 

@@ -1,11 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import apiClient from '../api/apiClient'
-
-const setupToken = () => {
-    if (localStorage.getItem('token')) {
-        apiClient.defaults.headers.authorization = "Bearer " + localStorage.getItem('token')
-    }
-}
+import { setupToken } from '@/utils/token';
 
 export const fetchTasks = createAsyncThunk(
     "tasks/fetchTasks",
