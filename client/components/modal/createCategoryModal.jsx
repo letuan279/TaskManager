@@ -74,6 +74,7 @@ export function CreateCategoryModal({ children }) {
             <Textarea
               placeholder="Enter the description"
               onChange={(e) => setDescription(e.target.value)}
+              value={description}
             />
           </div>
           <div>

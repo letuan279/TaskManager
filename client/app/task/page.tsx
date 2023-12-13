@@ -19,6 +19,7 @@ import { CreateTaskModal } from "@/components/modal/createTaskModal.jsx";
 import { DetailTaskModal } from "@/components/modal/detailTaskModal.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTasks } from "@/redux/taskSlice";
+import { fetchCategories } from "@/redux/categoriesSlice";
 import { AppDispatch, RootState } from "@/redux/store";
 import { DatePicker } from "@/components/ui/date-picker";
 
@@ -43,20 +44,7 @@ export type Tasks = {
   done: TaskType[];
 };
 
-function getFilterDateMinusNumber(option: string) {
-  switch (option) {
-    case "yesterday":
-      return -1;
-    case "tomorrow":
-      return 1;
-    case "today":
-    default:
-      return 0;
-  }
-}
-
 function Task() {
-  // const [tasks, setTasks] = useState<Tasks>();
   const [filterDay, setFilterDay] = useState(null);
 
   const dispatch = useDispatch<AppDispatch>();
@@ -102,12 +90,6 @@ function Task() {
             <div className="h-min">
               <DatePicker date={filterDay} setDate={setFilterDay} />
             </div>
-            <Select>
-              <SelectTrigger className="w-40">
-                <SelectValue placeholder="Select date..." />
-              </SelectTrigger>
-              <SelectContent></SelectContent>
-            </Select>
             <CreateTaskModal>
               <DialogTrigger asChild>
                 <Button>Create</Button>

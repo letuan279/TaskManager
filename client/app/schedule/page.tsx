@@ -81,7 +81,9 @@ function Schedule() {
       <div className="fixed" style={{ top: "146px", right: "35px" }}>
         <CreateTaskModal>
           <DialogTrigger asChild>
-            <Button className="bg-blue-400 rounded-2xl">Create</Button>
+            <Button className="bg-blue-400 rounded-2xl w-[100px]">
+              Create
+            </Button>
           </DialogTrigger>
         </CreateTaskModal>
       </div>

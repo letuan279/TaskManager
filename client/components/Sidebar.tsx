@@ -13,7 +13,7 @@ import { fetchTasks } from "@/redux/taskSlice";
 
 export default function Sidebar({ children }: { children: React.ReactNode }) {
   return (
-    <aside className="h-screen w-fit w-[250px]">
+    <aside className="h-screen w-[250px]">
       <nav className="h-full flex flex-col bg-white border-r shadow-sm">
         <div className="p-4 pb-2 flex items-center gap-3">
           <img
@@ -22,7 +22,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
             alt=""
             style={{ width: "35px", height: "35px" }}
           />
-          <span className="font-bold text-2xl">Trackit</span>
+          <span className="font-bold text-2xl">Task Manager</span>
         </div>
         <ul className="flex-1 px-3">{children}</ul>
       </nav>
@@ -78,7 +78,7 @@ function SearchBar() {
     <div className="input-wrapper h-10 my-2 border-none rounded px-4 bg-gray-100 flex items-center">
       <Search size={20} />
       <input
-        placeholder="Type to search..."
+        placeholder="What to search for..."
         className="bg-transparent border-none h-full text-lg w-full ml-2 focus:outline-none"
       />
     </div>
@@ -97,7 +97,7 @@ export function SidebarCategoryItem() {
 
   return (
     <>
-      <SearchBar />
+      {/* <SearchBar /> */}
       {categories.data?.map((item: CategoryType) => (
         <Link
           key={item._id + "2"}

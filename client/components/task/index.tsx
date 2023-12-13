@@ -38,9 +38,9 @@ type InputType = {
 };
 
 const PriorityBadge = ({ num }: { num: number }) => {
-  if (num === 1) return <Badge variant={"high"}>HIGH</Badge>;
-  if (num === 2) return <Badge variant={"medium"}>MEDIUM</Badge>;
-  if (num === 3) return <Badge variant={"low"}>LOW</Badge>;
+  if (num === 1) return <Badge variant={"high"}>high</Badge>;
+  if (num === 2) return <Badge variant={"medium"}>normal</Badge>;
+  if (num === 3) return <Badge variant={"low"}>low</Badge>;
   return <Badge variant={"outline"}>UNKNOWN</Badge>;
 };
 
@@ -56,7 +56,7 @@ const TaskComponent = ({ task }: InputType) => {
     dispatch(deleteTask(id))
       .unwrap()
       .then(() => {
-        toast.success("Delete successfull");
+        toast.success("Successfully deleted task");
       })
       .catch((error) => {
         toast.error(error.message || "Something was wrong!");
@@ -100,12 +100,11 @@ const TaskComponent = ({ task }: InputType) => {
               <AlertDialogHeader>
                 {" "}
                 <AlertDialogTitle>
-                  ⚠️ Are you absolutely sure?
+                  ⚠️ Have you absolutely checked?
                 </AlertDialogTitle>{" "}
                 <AlertDialogDescription>
                   {" "}
-                  This action cannot be undone. This will permanently delete
-                  your <b>category</b> and remove all its <b>tasks</b>.
+                  This operation cannot be undone.
                 </AlertDialogDescription>{" "}
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -125,9 +124,22 @@ const TaskComponent = ({ task }: InputType) => {
         <div dangerouslySetInnerHTML={{ __html: task.description }}></div>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <div className="text-priority-high flex flex-row items-center space-x-2">
-          <Clock />
-          <div>
+        <div className="flex gap-3">
+          <div className="flex items-center">
+            <div
+              className={`w-3 h-3 rounded-full`}
+              style={{ backgroundColor: category?.color }}
+            ></div>
+            <span
+              className={
+                "font-medium w-fit ml-3 text-sm overflow-hidden transition-all"
+              }
+            >
+              {category?.name}
+            </span>
+          </div>
+          <div className="text-priority-high flex flex-row items-center space-x-2 gap-2">
+            <Clock />
             {moment(new Date(task.end_day)).format("DD/MM/YYYY hh:mm:ss")}
           </div>
         </div>
@@ -147,22 +159,9 @@ export const MiniTaskComponent = ({ task }: InputType) => {
         </Button>
       </CardHeader>
       <CardFooter className="flex justify-between">
-        <div className="flex gap-3">
-          <div className="flex items-center">
-            <div
-              className={`w-3 h-3 rounded-full`}
-              style={{ backgroundColor: category?.color }}
-            ></div>
-            <span
-              className={
-                "font-medium w-fit ml-3 text-sm overflow-hidden transition-all"
-              }
-            >
-              {category?.name}
-            </span>
-          </div>
-          <div className="text-priority-high flex flex-row items-center space-x-2 gap-2">
-            <Clock />
+        <div className="text-priority-high flex flex-row items-center space-x-2">
+          <Clock />
+          <div>
             {moment(new Date(task.end_day)).format("DD/MM/YYYY hh:mm:ss")}
           </div>
         </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import FullCalendar from "@fullcalendar/react";
-import timeGridPlugin from "@fullcalendar/timegrid";
+import timeGridPlugin from "@fullcalendar/timegrid/index.js";
 
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";

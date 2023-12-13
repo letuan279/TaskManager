@@ -21,6 +21,8 @@ export default function AuthProvider({
 
   useLayoutEffect(() => {
     const token = localStorage.getItem("token");
+    console.log(token);
+
     if (!token && !pathname.includes("auth")) router.push("/auth/login");
     if (token) {
       dispatch(checkAuth(token))
@@ -31,6 +33,7 @@ export default function AuthProvider({
           }
         })
         .catch((error) => {
+          localStorage.removeItem("token");
           router.push("/auth/login");
         });
     }

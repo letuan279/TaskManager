@@ -235,7 +235,7 @@ class TaskController {
             const calendarRes = await calendar.events.list({
                 calendarId: 'primary',
                 timeMin: new Date('2023-01-01T00:00:00Z').toISOString(),
-                timeMax: new Date('2023-12-31T23:59:59Z').toISOString(),
+                timeMax: new Date('2024-12-31T23:59:59Z').toISOString(),
                 singleEvents: true,
                 orderBy: 'startTime',
             });

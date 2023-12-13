@@ -27,7 +27,7 @@ import { register } from "@/redux/userSlice";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
-  username: z.string().min(1, { message: "Username is required" }),
+  name: z.string().min(1, { message: "Username is required" }),
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters" }),
@@ -73,7 +73,7 @@ export default function Register() {
       <div className="flex flex-col items-center gap-8 w-full">
         <div className="flex justify-center items-center gap-2 text-4xl font-semibold">
           <Image src={logo} alt="logo" height={32} />
-          <div>Trackit</div>
+          <div>Task Manager</div>
         </div>
         <div className="rounded-md border shadow-md p-8 space-y-8 w-1/3">
           <div className="w-full text-center text-2xl">Register</div>
@@ -112,7 +112,7 @@ export default function Register() {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input placeholder="" {...field} />
+                      <Input placeholder="" {...field} type="password" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -125,7 +125,7 @@ export default function Register() {
                   <FormItem>
                     <FormLabel>Confirm Password</FormLabel>
                     <FormControl>
-                      <Input placeholder="" {...field} />
+                      <Input placeholder="" {...field} type="password" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -133,7 +133,7 @@ export default function Register() {
               />
               <Button
                 type="submit"
-                className="w-full rounded-full bg-[#C3C3C3] hover:bg-[#C3C3C3]/90"
+                className="w-full rounded-full bg-blue-400 hover:bg-[#C3C3C3]/90"
               >
                 Register
               </Button>

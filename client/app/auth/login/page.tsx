@@ -65,7 +65,7 @@ export default function Login() {
       <div className="flex flex-col items-center gap-8 w-full">
         <div className="flex justify-center items-center gap-2 text-4xl font-semibold">
           <Image src={logo} alt="logo" height={32} />
-          <div>Trackit</div>
+          <div>Task Manager</div>
         </div>
         <div className="rounded-md border shadow-md p-8 space-y-8 w-1/3">
           <div className="w-full text-center text-2xl">Login</div>

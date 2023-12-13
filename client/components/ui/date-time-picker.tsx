@@ -176,7 +176,7 @@ const DateTimePicker = (props: DatePickerProps) => {
           {props.value?.date ? (
             format(props.value.date, dateDisplayFormat)
           ) : (
-            <span>日時を選択してください</span>
+            <span>Please select date and time</span>
           )}
         </Button>
       </PopoverTrigger>

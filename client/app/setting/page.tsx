@@ -109,8 +109,8 @@ function Setting() {
               {" "}
               {tasks.length > 0 && (
                 <div>
-                  <b className="text-lg">{tasks.length}</b>
-                  Would you like to add?
+                  <b className="text-lg">{tasks.length}</b> tasks. Would you
+                  like to add?
                 </div>
               )}
               {tasks.length === 0 && `There are no tasks!`}

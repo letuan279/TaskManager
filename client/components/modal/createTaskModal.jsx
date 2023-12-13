@@ -198,7 +198,7 @@ export function CreateTaskModal({ children }) {
               config={{
                 placeholderText: "Enter the description",
               }}
-              model={""}
+              model={description}
               onModelChange={(newModel) => {
                 setDescription(newModel);
               }}

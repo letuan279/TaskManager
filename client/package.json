@@ -39,6 +39,7 @@
     "cmdk": "^0.2.0",
     "date-fns": "^2.30.0",
     "font-awesome": "^4.7.0",
+    "googleapis": "^129.0.0",
     "lucide-react": "^0.292.0",
     "moment": "^2.29.4",
     "next": "14.0.2",
